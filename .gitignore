@@ -1,0 +1,83 @@
+# ======================
+# GLOBAL
+# ======================
+
+# Environment files
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Logs
+*.log
+*.pid
+*.seed
+*.bak
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# ======================
+# FRONTEND (React + Vite)
+# ======================
+
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.cache/
+frontend/.eslintcache
+frontend/coverage/
+frontend/.turbo/
+frontend/.parcel-cache/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/.env
+frontend/.env.*
+
+
+# ======================
+# BACKEND (Django)
+# ======================
+
+backend/__pycache__/
+backend/twformProject/twformProject/__pycache__/
+backend/twformProject/base/__pycache__/
+backend/twformProject/base/migrations/__pycache__/
+backend/*.py[cod]
+backend/*.sqlite3
+backend/db.sqlite3
+backend/*.log
+backend/media/
+backend/static/
+backend/staticfiles/
+backend/.env
+backend/env/
+backend/.venv/
+backend/venv/
+backend/*.mo
+backend/*.pot
+backend/debug.log
+backend/celerybeat-schedule
+
+# Uncomment if excluding initial migrations (not recommended for teams)
+# backend/**/migrations/
+
+# ======================
+# DOCKER (optional)
+# ======================
+
+.docker/
+docker-compose.override.yml
+*.pem

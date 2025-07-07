@@ -6,7 +6,13 @@ const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
   if (loading) return <div>Loading...</div>;
-  if (user) return <Navigate to="/home" replace />;
+
+  if (user && user.user_type) {
+    const dashboardPath = `/${user.user_type
+      .toLowerCase()
+      .replace(" ", "_")}/dashboard`;
+    return <Navigate to={dashboardPath} replace />;
+  }
 
   return children;
 };

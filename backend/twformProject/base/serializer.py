@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import serializers
+from .models import Account
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -23,9 +24,19 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return user
 
 class UserSerializer(serializers.ModelSerializer):
+    user_type = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ['username']
+        fields = ['id', 'username', 'email', 'user_type']
+
+    def get_user_type(self, user):
+        try:
+            account = Account.objects.get(user_id=user)
+            return account.user_type_id.name
+        except Account.DoesNotExist:
+            return None
+
 
 class CoursesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -48,10 +59,17 @@ class EmailTokenObtainPairSerializer(serializers.Serializer):
         user = authenticate(username=user.username, password=password)
 
         if user is None:
-            raise serializers.ValidationError("Invalid email or password")
+            raise serializers.ValidationError("No user found")
+
+        try:
+            account = Account.objects.get(user_id=user)
+            user_type = account.user_type_id.name 
+        except Account.DoesNotExist:
+            user_type = None
 
         refresh = RefreshToken.for_user(user)
         return {
             "refresh": str(refresh),
             "access": str(refresh.access_token),
+            "user_type": user_type, 
         }

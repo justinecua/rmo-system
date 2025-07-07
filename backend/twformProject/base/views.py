@@ -5,6 +5,10 @@ from .models import Course
 from .serializer import CoursesSerializer, UserRegisterSerializer, EmailTokenObtainPairSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework.exceptions import AuthenticationFailed
+from django.contrib.auth.models import User
+from .serializer import UserSerializer
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView
@@ -28,7 +32,10 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             serializer.is_valid(raise_exception=True)
             tokens = serializer.validated_data
 
-            res = Response({'success': True})
+            res = Response({
+                'success': True,
+                'user_type': tokens["user_type"] 
+            })
 
             res.set_cookie(
                 key="access_token",
@@ -102,13 +109,8 @@ def get_courses(request):
     serializer = CoursesSerializer(courses, many=True)
     return Response(serializer.data)
 
-from rest_framework_simplejwt.tokens import AccessToken
-from rest_framework.exceptions import AuthenticationFailed
-from django.contrib.auth.models import User
-from .serializer import UserSerializer
-
 @api_view(['GET'])
-@permission_classes([AllowAny])  # Allow so we can manually handle auth
+@permission_classes([AllowAny]) 
 def is_logged_in(request):
     token = request.COOKIES.get('access_token')
 

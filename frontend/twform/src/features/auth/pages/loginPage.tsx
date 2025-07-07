@@ -22,9 +22,26 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const success = await loginUser(email, password);
-    if (success) {
-      nav("/home", { replace: true });
+    const userType = await loginUser(email, password);
+
+    if (userType) {
+      switch (userType) {
+        case "Student":
+          nav("/student/dashboard", { replace: true });
+          break;
+        case "Panel":
+          nav("/panel/dashboard", { replace: true });
+          break;
+        case "Adviser":
+          nav("/adviser/dashboard", { replace: true });
+          break;
+        case "Dean":
+          nav("/dean/dashboard", { replace: true });
+          break;
+        case "Research Staff":
+          nav("/rmo_staff/dashboard", { replace: true });
+          break;
+      }
     }
   };
 
@@ -65,11 +82,10 @@ const LoginPage = () => {
                 />
               </div>
             </div>
-            <CardFooter className="flex-col gap-2 mt-4">
-              <Button type="submit" className="w-full bg-[#4199fe] h-10">
-                Login
-              </Button>
-            </CardFooter>
+
+            <Button type="submit" className="mt-4 w-full bg-[#4199fe] h-10">
+              Login
+            </Button>
           </form>
         </CardContent>
       </Card>

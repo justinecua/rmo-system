@@ -16,32 +16,38 @@ import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { loginUser } = useAuth();
   const nav = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const userType = await loginUser(email, password);
+    setLoading(true);
 
-    if (userType) {
-      switch (userType) {
-        case "Student":
-          nav("/student/dashboard", { replace: true });
-          break;
-        case "Panel":
-          nav("/panel/dashboard", { replace: true });
-          break;
-        case "Adviser":
-          nav("/adviser/dashboard", { replace: true });
-          break;
-        case "Dean":
-          nav("/dean/dashboard", { replace: true });
-          break;
-        case "Research Staff":
-          nav("/rmo_staff/dashboard", { replace: true });
-          break;
+    try {
+      const userType = await loginUser(email, password);
+      if (userType) {
+        switch (userType) {
+          case "Student":
+            nav("/student/dashboard", { replace: true });
+            break;
+          case "Panel":
+            nav("/panel/dashboard", { replace: true });
+            break;
+          case "Adviser":
+            nav("/adviser/dashboard", { replace: true });
+            break;
+          case "Dean":
+            nav("/dean/dashboard", { replace: true });
+            break;
+          case "Research Staff":
+            nav("/rmo_staff/dashboard", { replace: true });
+            break;
+        }
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,13 +75,11 @@ const LoginPage = () => {
                 />
               </div>
               <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                </div>
+                <Label htmlFor="password">Password</Label>
                 <Input
-                  placeholder="input your password"
                   id="password"
                   type="password"
+                  placeholder="input your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -83,8 +87,19 @@ const LoginPage = () => {
               </div>
             </div>
 
-            <Button type="submit" className="mt-4 w-full bg-[#4199fe] h-10">
-              Login
+            <Button
+              type="submit"
+              className="mt-4 w-full bg-[#160e73] h-10"
+              disabled={loading}
+            >
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                  Logging in...
+                </div>
+              ) : (
+                "Login"
+              )}
             </Button>
           </form>
         </CardContent>

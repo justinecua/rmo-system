@@ -5,3 +5,4 @@ export const REGISTER_URL = `${BASE_URL}register/`;
 export const LOGOUT_URL = `${BASE_URL}logout/`;
 export const COURSES_URL = `${BASE_URL}courses/`;
 export const AUTHENTICATED_URL = `${BASE_URL}authenticated/`;
+export const FORMTYPES_URL = `${BASE_URL}formtypes/`;

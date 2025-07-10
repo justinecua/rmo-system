@@ -14,6 +14,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import pymysql
 import os
+from datetime import timedelta
 
 pymysql.install_as_MySQLdb()
 load_dotenv()
@@ -110,6 +111,13 @@ TEMPLATES = [
         },
     },
 ]
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': False,
+}
 
 WSGI_APPLICATION = 'twformProject.wsgi.application'
 

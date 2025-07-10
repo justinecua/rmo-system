@@ -1,15 +1,12 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../context/useAuth";
+import LoadingSpinner from "../ui/loadingspinner";
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  console.log("user:", user);
-  console.log("loading:", loading);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <LoadingSpinner />;
 
   if (!user) {
     return <Navigate to="/login" replace />;

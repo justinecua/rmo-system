@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Course
-from .serializer import CoursesSerializer, UserRegisterSerializer, EmailTokenObtainPairSerializer
+from .models import Course, FormType
+from .serializer import CoursesSerializer, UserRegisterSerializer, EmailTokenObtainPairSerializer, FormTypeSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import AccessToken
@@ -124,4 +124,12 @@ def is_logged_in(request):
         raise AuthenticationFailed("Invalid or expired token")
 
     serializer = UserSerializer(user)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated]) 
+def get_formTypes(request):
+    form_types = FormType.objects.all()
+    serializer = FormTypeSerializer(form_types, many=True)
     return Response(serializer.data)

@@ -1,12 +1,10 @@
 from rest_framework import serializers
-from .models import Course
+from .models import Course, Account, FormType
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import Account
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -28,7 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'user_type']
+        fields = ['id', 'username', 'email', 'user_type', 'first_name', 'last_name']
 
     def get_user_type(self, user):
         try:
@@ -73,3 +71,8 @@ class EmailTokenObtainPairSerializer(serializers.Serializer):
             "access": str(refresh.access_token),
             "user_type": user_type, 
         }
+
+class FormTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FormType
+        fields = ['form_type_id', 'formName', 'formDescription']

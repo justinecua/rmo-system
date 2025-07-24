@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useAuth } from "../../../context/useAuth";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -42,11 +43,27 @@ const LoginPage = () => {
             nav("/dean/dashboard", { replace: true });
             break;
           case "Research Staff":
-            nav("/rmo_staff/dashboard", { replace: true });
+            nav("/research_staff/dashboard", { replace: true });
             break;
+          default:
+            toast("Unknown user type.");
+            setLoading(false);
         }
+      } else {
+        setLoading(false);
       }
-    } finally {
+    } catch (err) {
+      const error = err?.response?.data?.error;
+
+      console.log(error);
+      if (error === "User not found.") {
+        toast.error("User not found.");
+      } else if (error === "Incorrect password.") {
+        toast.error("Incorrect password.");
+      } else {
+        toast.error(error || "Something went wrong.");
+      }
+
       setLoading(false);
     }
   };

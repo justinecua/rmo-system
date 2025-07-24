@@ -10,17 +10,12 @@ import {
 axios.defaults.withCredentials = true;
 
 export const login = async (email, password) => {
-  try {
-    const response = await axios.post(
-      LOGIN_URL,
-      { email, password },
-      { withCredentials: true }
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Login failed:", error);
-    return false;
-  }
+  const response = await axios.post(
+    LOGIN_URL,
+    { email, password },
+    { withCredentials: true }
+  );
+  return response.data;
 };
 
 export const get_notes = async () => {

@@ -1,14 +1,23 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Course
-from .serializer import CoursesSerializer, UserRegisterSerializer, EmailTokenObtainPairSerializer
+from accounts.models import Account
+from .serializer import UserRegisterSerializer, EmailTokenObtainPairSerializer, CollegeSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework.exceptions import AuthenticationFailed
+from django.contrib.auth.models import User
+from .serializer import UserSerializer
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView
 )
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import status
+from base.models import College
+from rest_framework import status, serializers
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -19,6 +28,7 @@ def register(request):
         return Response(serializer.data)
     return Response(serializer.error)
 
+
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = EmailTokenObtainPairSerializer
 
@@ -28,7 +38,10 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             serializer.is_valid(raise_exception=True)
             tokens = serializer.validated_data
 
-            res = Response({'success': True})
+            res = Response({
+                'success': True,
+                'user_type': tokens["user_type"]
+            })
 
             res.set_cookie(
                 key="access_token",
@@ -50,8 +63,24 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
             return res
 
+        except serializers.ValidationError as e:
+            raw = e.detail
+            if isinstance(raw, dict) and "non_field_errors" in raw:
+                error_message = raw["non_field_errors"][0]
+            else:
+                error_message = str(e.detail)
+
+            return Response(
+                {"success": False, "error": str(error_message)},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
         except Exception as e:
-            return Response({'success': False, 'error': str(e)}, status=400)
+            return Response(
+                {"success": False, "error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
 
 class CustomRefreshTokenView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
@@ -95,20 +124,14 @@ def logout(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated]) 
-def get_courses(request):
-    user = request.user
-    courses = Course.objects.all()
-    serializer = CoursesSerializer(courses, many=True)
+@permission_classes([AllowAny]) 
+def get_colleges(request):
+    colleges = College.objects.all()
+    serializer = CollegeSerializer(colleges, many=True)
     return Response(serializer.data)
 
-from rest_framework_simplejwt.tokens import AccessToken
-from rest_framework.exceptions import AuthenticationFailed
-from django.contrib.auth.models import User
-from .serializer import UserSerializer
-
 @api_view(['GET'])
-@permission_classes([AllowAny])  # Allow so we can manually handle auth
+@permission_classes([AllowAny]) 
 def is_logged_in(request):
     token = request.COOKIES.get('access_token')
 
@@ -123,3 +146,12 @@ def is_logged_in(request):
 
     serializer = UserSerializer(user)
     return Response(serializer.data)
+
+
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated]) 
+# def get_formTypes(request):
+#     form_types = FormType.objects.all()
+#     serializer = FormTypeSerializer(form_types, many=True)
+#     return Response(serializer.data)
+

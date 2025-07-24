@@ -1,3 +1,8 @@
 from django.contrib import admin
+from base.models import College
+from articles.models import Articles, ArticleFiles
 
-# Register your models here.
+admin.site.register(College)
+admin.site.register(Articles)
+admin.site.register(ArticleFiles)
+

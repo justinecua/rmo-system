@@ -14,6 +14,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import pymysql
 import os
+from datetime import timedelta
 
 pymysql.install_as_MySQLdb()
 load_dotenv()
@@ -49,8 +50,16 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://127.0.0.1:9000",
     "http://localhost:5173",
-    "http://192.168.1.7:3000", 
-    "http://192.168.1.7:5173",  
+    "http://localhost:5174",
+    "http://192.168.1.9:3000",
+    "http://192.168.1.9:8001",  
+    "http://192.168.1.9:5173",
+    "http://10.15.20.221:8001",
+    "http://10.15.20.221:5173",
+    "http://10.15.20.152:8001",
+    "http://10.15.20.152:5173",
+    "http://192.168.43.245:8001",
+    "http://192.168.43.245:5173",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -68,6 +77,11 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt',
     'base',
+    'accounts',
+    'announcements',
+    'forms',
+    'activities',
+    'articles'
 ]
 
 MIDDLEWARE = [
@@ -108,6 +122,13 @@ TEMPLATES = [
         },
     },
 ]
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': False,
+}
 
 WSGI_APPLICATION = 'twformProject.wsgi.application'
 
@@ -174,6 +195,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

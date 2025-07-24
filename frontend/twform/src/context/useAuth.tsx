@@ -1,10 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import {
-  authenticated_user,
-  login,
-  logout,
-  register,
-} from "../api/auth/endpoint";
+import { authenticated_user, login, logout, register } from "../api/auth/auth";
 
 const AuthContext = createContext();
 
@@ -15,25 +10,26 @@ export const AuthProvider = ({ children }) => {
   const fetchUser = async () => {
     try {
       const res = await authenticated_user();
-      setUser(res); // 👈 Save the logged in user
+      setUser(res);
       console.log("Fetching user...");
       console.log("Fetched user:", res);
     } catch (error) {
       setUser(null);
     } finally {
-      setLoading(false); // 👈 Important!
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchUser(); // 👈 Load user on first mount
+    fetchUser();
   }, []);
 
   const loginUser = async (email, password) => {
     const res = await login(email, password);
-    if (res.success) {
-      await fetchUser(); // 👈 Get user after login
-      return true;
+    if (res.success || res.user_type) {
+      await fetchUser();
+      console.log("Login success, user type:", res.user_type);
+      return res.user_type;
     }
     return false;
   };

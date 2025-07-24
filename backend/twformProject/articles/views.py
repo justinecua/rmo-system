@@ -232,3 +232,28 @@ def get_approved_articles(request):
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def get_related_articles(request, article_id):
+    try:
+        base_article = Articles.objects.get(article_id=article_id)
+        related_articles = Articles.objects.filter(status="approved").exclude(article_id=article_id)
+        keyword_filter = Q()
+        for keyword in base_article.keywords:
+            keyword_filter |= Q(keywords__icontains=keyword)
+
+        college_filter = Q(college=base_article.college) if base_article.college else Q()
+        related_articles = related_articles.filter(
+            keyword_filter | college_filter
+        ).distinct()
+
+        related_articles = related_articles.select_related("college").prefetch_related("articleFiles")[:3]
+
+        serializer = ArticleSerializer(related_articles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Articles.DoesNotExist:
+        return Response({"error": "Base article not found."}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

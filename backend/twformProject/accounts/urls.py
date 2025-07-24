@@ -1,7 +1,6 @@
 from django.urls import path
-from . import views  # or import specific views
+from . import views 
 
 urlpatterns = [
-    # example
-    # path('submit/', views.submit_form, name='submit_form'),
+    path('get_userTypes/', views.get_userTypes, name='get_userTypes'),
 ]

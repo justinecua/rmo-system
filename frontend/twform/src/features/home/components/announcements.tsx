@@ -41,6 +41,10 @@ const HomeAnnouncements = ({
         <div className="col-span-full flex justify-center items-center my-90">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
         </div>
+      ) : announcements.length === 0 ? (
+        <div className="text-center text-gray-500 dark:text-gray-400 h-[60vh] flex justify-center items-center">
+          No announcements available at the moment.
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {announcements.map((announcement, index) => {

@@ -40,3 +40,7 @@ export const GET_RELATED_ARTICLES = (id: number) =>
 
 // UserType endpoints
 export const GET_USERTYPES = `${BASE_URL}accounts/get_userTypes/`;
+
+// Resources endpoints
+export const UPLOAD_RESOURCE = `${BASE_URL}resources/uploadResource/`;
+export const GET_RESOURCES = `${BASE_URL}resources/getResources/`;

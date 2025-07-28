@@ -27,7 +27,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { REGISTER_URL, GET_USERTYPES } from "@/api/urls";
-import { CheckCircle2, FileText, MoreVertical } from "lucide-react";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -43,29 +42,45 @@ const RegisterPage = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    console.log("Submitting register form...");
 
     if (password !== confirmPassword) {
       return toast.error("Passwords do not match");
     }
 
     setLoading(true);
+
     try {
+      console.log("Sending data:", {
+        email,
+        password,
+        first_name: firstname,
+        last_name: lastname,
+        username: firstname,
+        user_type_id: selectedUserType?.user_type_id,
+      });
+
       await axios.post(REGISTER_URL, {
         email,
         password,
         first_name: firstname,
         last_name: lastname,
         username: firstname,
-        college_id: selectedCollege?.college_id || null,
-        course_id: selectedCourse?.course_id || null,
         user_type_id: selectedUserType?.user_type_id,
       });
 
       toast.success("Registered successfully! Please log in.");
       nav("/login");
     } catch (err) {
-      const error = err?.response?.data?.error;
-      toast.error(error || "Registration failed.");
+      console.log("Error response:", err?.response?.data);
+      const errorData = err?.response?.data;
+
+      if (typeof errorData === "object") {
+        const errorMessages = Object.values(errorData).flat().join("\n");
+        toast.error(errorMessages || "Registration failed.");
+      } else {
+        toast.error("Registration failed.");
+      }
     } finally {
       setLoading(false);
     }

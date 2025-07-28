@@ -58,6 +58,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://10.15.20.221:5173",
     "http://10.15.20.152:8001",
     "http://10.15.20.152:5173",
+    "http://10.15.20.237:5173",
+    "http://10.15.20.237:8001",
     "http://192.168.43.245:8001",
     "http://192.168.43.245:5173",
 ]
@@ -81,7 +83,8 @@ INSTALLED_APPS = [
     'announcements',
     'forms',
     'activities',
-    'articles'
+    'articles',
+    'resources'
 ]
 
 MIDDLEWARE = [

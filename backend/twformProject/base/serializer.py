@@ -39,10 +39,31 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop("password")
+        college_id = validated_data.pop("college_id", None)
+        course_id = validated_data.pop("course_id", None)
+        user_type_id = validated_data.pop("user_type_id")
+
         user = User(**validated_data)
         user.set_password(password)
         user.save()
+
+        college = College.objects.filter(pk=college_id).first() if college_id else None
+        course = Course.objects.filter(pk=course_id).first() if course_id else None
+
+        try:
+            user_type = UserType.objects.get(pk=user_type_id)
+        except UserType.DoesNotExist:
+            raise serializers.ValidationError({"user_type_id": "Invalid user type ID"})
+
+        Account.objects.create(
+            user_id=user,
+            college_id=college,
+            course_id=course,
+            user_type_id=user_type,
+        )
+
         return user
+
 
 class UserSerializer(serializers.ModelSerializer):
     user_type = serializers.SerializerMethodField()

@@ -42,9 +42,8 @@ const HomeFooter = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
             <address className="not-italic text-sm text-gray-400">
-              <p>123 Research Avenue</p>
-              <p>Academic City, 10101</p>
-              <p className="mt-2">Email: rmo@university.edu</p>
+              <p>St. Michael's College, Quezon Avenue, Poblacion</p>
+              <p className="mt-2">researchoffice@smciligan.edu.ph</p>
               <p>Phone: (123) 456-7890</p>
             </address>
           </div>

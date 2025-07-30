@@ -1,5 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 const HomeHeader = ({
   activeTab,
@@ -74,21 +81,38 @@ const HomeHeader = ({
             </button>
 
             {/* Agenda Dropdown */}
-            <div className="relative">
-              <select
-                value={selectedAgenda}
-                onChange={(e) => {
-                  setSelectedAgenda(e.target.value);
-                  handleTabClick("research-agenda");
-                }}
-                className="border-none appearance-none bg-white border rounded-md pl-3 pr-8 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              >
-                <option value="institutional">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="capitalize text-gray-600  px-3 py-2 text-md"
+                >
+                  {selectedAgenda === "institutional"
+                    ? "Institutional Research Agenda"
+                    : "College Research Agenda"}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  className="text-md"
+                  onClick={() => {
+                    setSelectedAgenda("institutional");
+                    handleTabClick("research-agenda");
+                  }}
+                >
                   Institutional Research Agenda
-                </option>
-                <option value="college">College Research Agenda</option>
-              </select>
-            </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="text-md"
+                  onClick={() => {
+                    setSelectedAgenda("college");
+                    handleTabClick("research-agenda");
+                  }}
+                >
+                  College Research Agenda
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <button
               onClick={() => handleTabClick("forms")}

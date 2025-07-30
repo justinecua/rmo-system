@@ -124,4 +124,28 @@ class EmailTokenObtainPairSerializer(serializers.Serializer):
         }
 
 
+# serializers.py
+from rest_framework import serializers
+from activities.models import Activity
+from announcements.models import Announcement
+from articles.models import Articles
+from resources.models import Resource
+from accounts.models import Account
 
+class DashboardStatsSerializer(serializers.Serializer):
+    activities = serializers.IntegerField()
+    announcements = serializers.IntegerField()
+    articles = serializers.IntegerField()
+    pending_articles = serializers.IntegerField()
+    resources = serializers.IntegerField()
+    users = serializers.IntegerField()
+
+class RecentActivitySerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    title = serializers.CharField()
+    date = serializers.DateField()
+    type = serializers.CharField()
+
+class ArticleStatusSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    count = serializers.IntegerField()

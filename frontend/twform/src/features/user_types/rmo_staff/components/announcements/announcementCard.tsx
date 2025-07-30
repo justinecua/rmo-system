@@ -28,36 +28,38 @@ const AnnouncementCard = ({
   const additionalImages =
     announcement.photos?.filter((p) => !p.is_cover)?.map((p) => p.image) || [];
 
-  const mediaSectionHeight = additionalImages.length > 0 ? "h-40" : "h-85";
+  const mediaSectionHeight = additionalImages.length > 0 ? "h-62" : "h-85";
 
   return (
     <>
-      <div className="group relative overflow-hidden rounded-3xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col">
+      <div className="group relative overflow-hidden rounded-3xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col">
         {/* Floating action button */}
-        <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-9 w-9 p-0 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-sm hover:bg-white dark:hover:bg-gray-700"
+        {onDelete && (
+          <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-9 w-9 p-0 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-sm hover:bg-white dark:hover:bg-gray-700"
+                >
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="min-w-[120px] shadow-xl rounded-xl"
               >
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="min-w-[120px] shadow-xl rounded-xl"
-            >
-              <DropdownMenuItem
-                className="text-sm px-3 py-2 rounded-lg text-red-500"
-                onClick={() => onDelete(announcement.announcement_id)}
-              >
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+                <DropdownMenuItem
+                  className="text-sm px-3 py-2 rounded-lg text-red-500"
+                  onClick={() => onDelete(announcement.announcement_id)}
+                >
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
 
         <div className={`relative ${mediaSectionHeight} overflow-hidden`}>
           {coverPhoto ? (
@@ -65,7 +67,7 @@ const AnnouncementCard = ({
               <img
                 src={`${backendUrl}${coverPhoto}`}
                 alt="Cover"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-[250px] object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
             </>

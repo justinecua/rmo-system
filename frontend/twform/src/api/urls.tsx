@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = "http://10.15.20.237:8001/api/";
 
 // Auth endpoints
 export const LOGIN_URL = `${BASE_URL}login/`;
@@ -44,3 +44,6 @@ export const GET_USERTYPES = `${BASE_URL}accounts/get_userTypes/`;
 // Resources endpoints
 export const UPLOAD_RESOURCE = `${BASE_URL}resources/uploadResource/`;
 export const GET_RESOURCES = `${BASE_URL}resources/getResources/`;
+
+// Dashboard
+export const GET_DASHBOARD = `${BASE_URL}dashboard/all`;

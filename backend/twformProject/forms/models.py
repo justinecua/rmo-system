@@ -1,6 +1,7 @@
 from django.db import models
 from accounts.models import Account
-from base.models import College, InstitutionalResearchAgenda, CollegeResearchAgenda, ThesisTitle
+from base.models import College, CollegeResearchAgenda, ThesisTitle
+from institutionalResearchAgenda.models import InstitutionalResearchAgenda
 from datetime import date
 
 class FormType(models.Model):

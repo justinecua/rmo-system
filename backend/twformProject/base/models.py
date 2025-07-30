@@ -36,13 +36,6 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
-class InstitutionalResearchAgenda(models.Model):
-    ira_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=1000)
-    sub_areas = models.CharField(max_length=1500)
-
-    def __str__(self):
-        return self.name
 
 class FacultyUserType(models.Model):
     faculty_type_id = models.AutoField(primary_key=True)

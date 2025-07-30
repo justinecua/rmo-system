@@ -6,7 +6,12 @@ import HomeFooter from "./components/footer";
 import { toast } from "sonner";
 import { useLocation } from "react-router-dom";
 
-import { GET_ANNOUNCEMENTS_URL, GET_RESOURCES, GET_ARTICLES } from "@/api/urls";
+import {
+  GET_ANNOUNCEMENTS_URL,
+  GET_RESOURCES,
+  GET_ARTICLES,
+  GET_ACTIVITIES_URL,
+} from "@/api/urls";
 import HomeTabsSection from "./HomeTabsSection";
 import axios from "axios";
 
@@ -18,6 +23,7 @@ const HomePage = () => {
   const [loadingResources, setloadingResources] = useState(true);
   const [loadingAnnouncements, setLoadingAnnouncements] = useState(false);
   const [loadingArticles, setLoadingArticles] = useState(false);
+  const [loadingActivities, setLoadingActivities] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [resources, setResources] = useState([]);
@@ -131,6 +137,19 @@ const HomePage = () => {
     }
   };
 
+  const fetchActivities = async () => {
+    try {
+      setLoadingActivities(true);
+      const res = await axios.get(GET_ACTIVITIES_URL);
+      setActivities(Array.isArray(res.data) ? res.data : []);
+    } catch (error) {
+      console.error("Failed to fetch resources:", error);
+      setActivities([]);
+    } finally {
+      setLoadingActivities(false);
+    }
+  };
+
   useEffect(() => {
     fetchAnnouncements(currentPage);
   }, [currentPage]);
@@ -140,8 +159,18 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
+    fetchActivities();
+  }, []);
+
+  useEffect(() => {
     fetchArticles();
   }, []);
+
+  useEffect(() => {
+    if (!loadingResources && !loadingAnnouncements && !loadingArticles) {
+      setIsLoading(false);
+    }
+  }, [loadingResources, loadingAnnouncements, loadingArticles]);
 
   return (
     <div className="min-h-screen bg-gray-50">

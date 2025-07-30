@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from accounts.models import Account
 from .serializer import UserRegisterSerializer, EmailTokenObtainPairSerializer, CollegeSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -16,8 +15,17 @@ from rest_framework_simplejwt.views import (
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
-from base.models import College
 from rest_framework import status, serializers
+from rest_framework import status
+from django.contrib.auth.models import User
+from base.models import College, Course
+from accounts.models import Account, UserType
+from announcements.models import Announcement
+from activities.models import Activity
+from articles.models import Articles
+from resources.models import Resource
+from .serializer import UserRegisterSerializer
+
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -155,15 +163,6 @@ def is_logged_in(request):
 #     serializer = FormTypeSerializer(form_types, many=True)
 #     return Response(serializer.data)
 
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from rest_framework import status
-from django.contrib.auth.models import User
-from base.models import College, Course
-from accounts.models import Account, UserType
-from .serializer import UserRegisterSerializer
-
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
@@ -193,3 +192,115 @@ def register(request):
         return Response({"message": "User registered successfully."}, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+#-----------------------Dashboard ----------------------------
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.db.models import Count
+from datetime import datetime, timedelta
+from .serializer import (
+    DashboardStatsSerializer,
+    RecentActivitySerializer,
+    ArticleStatusSerializer
+)
+from activities.models import Activity
+from announcements.models import Announcement
+from articles.models import Articles
+from resources.models import Resource
+from accounts.models import Account
+from django.db.models import Count
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def dashboard_stats(request):
+    stats = {
+        'activities': Activity.objects.count(),
+        'announcements': Announcement.objects.count(),
+        'articles': Articles.objects.count(),
+        'pending_articles': Articles.objects.filter(status='pending').count(),
+        'resources': Resource.objects.count(),
+        'users': Account.objects.count()
+    }
+    
+    serializer = DashboardStatsSerializer(stats)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def recent_activities(request):
+    thirty_days_ago = datetime.now() - timedelta(days=30)
+    
+    activities = Activity.objects.filter(
+        created_at__gte=thirty_days_ago
+    ).order_by('-created_at')[:5]
+    
+    announcements = Announcement.objects.filter(
+        date_posted__gte=thirty_days_ago
+    ).order_by('-date_posted')[:5]
+    
+    recent_items = []
+    
+    for activity in activities:
+        recent_items.append({
+            'id': activity.activity_id,
+            'title': activity.title,
+            'date': activity.created_at.date(),
+            'type': 'activity'
+        })
+    
+    for announcement in announcements:
+        recent_items.append({
+            'id': announcement.announcement_id,
+            'title': announcement.title,
+            'date': announcement.date_posted.date(),
+            'type': 'announcement'
+        })
+
+    recent_items.sort(key=lambda x: x['date'], reverse=True)
+    
+    serializer = RecentActivitySerializer(recent_items[:4], many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def article_status(request):
+    status_counts = Articles.objects.values('status').annotate(count=Count('status'))
+    
+    status_map = {
+        'pending': 'Pending',
+        'approved': 'Approved',
+        'rejected': 'Rejected'
+    }
+
+    article_data = [
+        {
+            'name': status_map.get(item['status'], item['status']),
+            'count': item['count']
+        }
+        for item in status_counts
+    ]
+    
+    required_statuses = ['Pending', 'Approved', 'Rejected']
+    existing_statuses = [item['name'] for item in article_data]
+
+    for status in required_statuses:
+        if status not in existing_statuses:
+            article_data.append({'name': status, 'count': 0})
+
+    return Response(article_data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def dashboard_data(request):
+    stats_response = dashboard_stats(request._request)
+    activities_response = recent_activities(request._request)
+    articles_response = article_status(request._request)
+    
+    return Response({
+        'stats': stats_response.data,
+        'recent_activities': activities_response.data,
+        'article_status': articles_response.data
+    })

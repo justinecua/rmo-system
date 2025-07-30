@@ -84,7 +84,8 @@ INSTALLED_APPS = [
     'forms',
     'activities',
     'articles',
-    'resources'
+    'resources',
+    'institutionalResearchAgenda'
 ]
 
 MIDDLEWARE = [

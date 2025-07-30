@@ -49,8 +49,8 @@ const RMOStaffSidebar = ({
       icon: CalendarPlus2,
       path: "/research_staff/activities",
     },
-    { label: "IRA", icon: BookOpen, path: "/research_staff/ira" },
-    { label: "RCA", icon: BookText, path: "/research_staff/rca" },
+    // { label: "IRA", icon: BookOpen, path: "/research_staff/ira" },
+    // { label: "RCA", icon: BookText, path: "/research_staff/rca" },
     { label: "Forms", icon: Files, path: "/research_staff/forms" },
     {
       label: "Articles",

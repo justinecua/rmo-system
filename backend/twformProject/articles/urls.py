@@ -13,4 +13,5 @@ urlpatterns = [
     path('articles/<int:article_id>/', views.get_article_details, name='get_article_details'),
     path('articles/submit/', views.submit_article, name='submit_article'),
     path("articles/approved", views.get_approved_articles, name="get_approved_articles"),
+    path("articles/<int:article_id>/related/", views.get_related_articles, name='related_articles'),
 ]

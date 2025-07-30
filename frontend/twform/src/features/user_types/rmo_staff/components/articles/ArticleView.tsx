@@ -9,6 +9,9 @@ import {
   Calendar,
   Book,
 } from "lucide-react";
+import axios from "axios";
+import { GET_RELATED_ARTICLES } from "@/api/urls";
+import ArticleCard from "./ArticleCard";
 
 import HomeHeroSection from "@/features/home/components/heroSection";
 import cover from "../../../../../assets/images/cover.jpg";
@@ -20,14 +23,44 @@ const ArticleView = () => {
   const location = useLocation();
   const [selectedAgenda, setSelectedAgenda] = useState("institutional");
   const [isScrolled, setIsScrolled] = useState(false);
-  const article = location.state?.article;
+  const [article, setArticle] = useState(location.state?.article);
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+  const [relatedArticles, setRelatedArticles] = useState([]);
 
   useEffect(() => {
     window.scrollTo({ top: 350, behavior: "smooth" });
-  }, []);
+  }, [article]);
 
-  // Sample images
+  useEffect(() => {
+    if (location.state?.article) {
+      setArticle(location.state.article);
+    }
+  }, [location.state?.article]);
+
+  useEffect(() => {
+    const fetchRelated = async () => {
+      if (!article?.article_id) {
+        setRelatedArticles([]);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const res = await axios.get(GET_RELATED_ARTICLES(article.article_id));
+        setRelatedArticles(res.data || []);
+      } catch (err) {
+        console.error("Failed to fetch related articles:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRelated();
+  }, [article]);
+
   const images = {
     researchHero: cover,
   };
@@ -149,33 +182,25 @@ const ArticleView = () => {
             Related Research
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((item) => (
-              <div
-                key={item}
-                className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow"
-              >
-                <div className="p-5">
-                  <span className="inline-block px-3 py-1 text-xs font-semibold bg-blue-100 text-blue-800 rounded-full mb-2">
-                    {article.category || "Research"}
-                  </span>
-                  <h3 className="font-bold text-lg mb-2 line-clamp-2">
-                    {article.title.split(" ").slice(0, 8).join(" ")}{" "}
-                    {item !== 1 ? item : ""}
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                    {article.abstract.split(" ").slice(0, 20).join(" ")}...
-                  </p>
-                  <button
-                    onClick={() =>
-                      navigate(`/article/${item}`, { state: { article } })
-                    }
-                    className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                  >
-                    Read More →
-                  </button>
-                </div>
-              </div>
-            ))}
+            {loading ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-48 bg-gray-200 animate-pulse rounded-xl border border-gray-100"
+                />
+              ))
+            ) : relatedArticles.length > 0 ? (
+              relatedArticles.map((relatedArticle: any) => (
+                <ArticleCard
+                  key={relatedArticle.article_id}
+                  article={relatedArticle}
+                />
+              ))
+            ) : (
+              <p className="text-gray-500 col-span-full">
+                No related articles found.
+              </p>
+            )}
           </div>
         </div>
       </div>

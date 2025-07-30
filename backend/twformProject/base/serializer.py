@@ -7,18 +7,40 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+from accounts.models import Account, UserType
+from base.models import College, Course
+
 class UserRegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    college_id = serializers.IntegerField(required=False, allow_null=True)
+    course_id = serializers.IntegerField(required=False, allow_null=True)
+    user_type_id = serializers.IntegerField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    username = serializers.CharField()
 
     class Meta:
         model = User
-        fields = ['email', 'password']
+        fields = [
+            'username',
+            'email',
+            'password',
+            'first_name',
+            'last_name',
+            'college_id',
+            'course_id',
+            'user_type_id',
+        ]
+        extra_kwargs = {
+            'password': {'write_only': True},
+        }
 
     def create(self, validated_data):
-        user = User(
-            email=validated_data['email']
-        )
-        user.set_password(validated_data['password'])
+        password = validated_data.pop("password")
+        user = User(**validated_data)
+        user.set_password(password)
         user.save()
         return user
 

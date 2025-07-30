@@ -35,3 +35,8 @@ export const UPDATE_ARTICLE_STATUS = (id: number) =>
 export const GET_ARTICLE_DETAILS = (id: number) =>
   `${BASE_URL}articles/articles/${id}/`;
 export const GET_APPROVED_ARTICLES = `${BASE_URL}articles/articles/approved`;
+export const GET_RELATED_ARTICLES = (id: number) =>
+  `${BASE_URL}articles/articles/${id}/related/`;
+
+// UserType endpoints
+export const GET_USERTYPES = `${BASE_URL}accounts/get_userTypes/`;

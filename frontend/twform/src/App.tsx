@@ -1,6 +1,7 @@
 import "./index.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./features/auth/pages/loginPage";
+import RegisterPage from "./features/auth/pages/regsiterPage";
 import PrivateRoute from "./components/private/private_route";
 import PublicRoute from "./components/public/public_route";
 
@@ -56,6 +57,15 @@ function App() {
             <PublicRoute>
               {" "}
               <LoginPage />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              {" "}
+              <RegisterPage />
             </PublicRoute>
           }
         />

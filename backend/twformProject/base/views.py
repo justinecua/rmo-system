@@ -155,3 +155,41 @@ def is_logged_in(request):
 #     serializer = FormTypeSerializer(form_types, many=True)
 #     return Response(serializer.data)
 
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.models import User
+from base.models import College, Course
+from accounts.models import Account, UserType
+from .serializer import UserRegisterSerializer
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def register(request):
+    serializer = UserRegisterSerializer(data=request.data)
+    if serializer.is_valid():
+        user = serializer.save()
+
+        college_id = request.data.get('college_id')
+        course_id = request.data.get('course_id')
+        user_type_id = request.data.get('user_type_id')
+
+        college = College.objects.filter(pk=college_id).first() if college_id else None
+        course = Course.objects.filter(pk=course_id).first() if course_id else None
+
+        try:
+            user_type = UserType.objects.get(pk=user_type_id)
+        except UserType.DoesNotExist:
+            return Response({"error": "Invalid user type"}, status=status.HTTP_400_BAD_REQUEST)
+
+        Account.objects.create(
+            user_id=user,
+            college_id=college,
+            course_id=course,
+            user_type_id=user_type,
+        )
+
+        return Response({"message": "User registered successfully."}, status=status.HTTP_201_CREATED)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

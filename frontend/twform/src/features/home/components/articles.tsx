@@ -200,13 +200,11 @@ const HomeArticles = () => {
             <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
           </div>
         ) : filteredArticles.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredArticles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
+          <div className="col-span-full text-center text-gray-500 dark:text-gray-400 py-8 my-90">
+            No announcements available at the moment.
           </div>
         ) : (
-          <div className="bg-white rounded-xl shadow-xs border border-gray-200 p-12 text-center">
+          <div className="bg-white rounded-xl shadow-xs border border-gray-200 h-[50vh] flex justify-center items-center flex-col text-center">
             <Search className="h-12 w-12 mx-auto text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-1">
               No publications found

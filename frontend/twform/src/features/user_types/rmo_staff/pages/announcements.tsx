@@ -242,11 +242,14 @@ const RMOStaffAnnouncements = () => {
               </div>
             </div>
           </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {loadingAnnouncements ? (
               <div className="col-span-full flex justify-center items-center my-90">
                 <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+              </div>
+            ) : announcements.length === 0 ? (
+              <div className="col-span-full text-center text-gray-500 dark:text-gray-400 py-8 my-90">
+                No announcements available at the moment.
               </div>
             ) : (
               announcements.map((announcement, index) => (

@@ -6,33 +6,28 @@ import HomeFooter from "./components/footer";
 import { toast } from "sonner";
 import { useLocation } from "react-router-dom";
 
-import { GET_ANNOUNCEMENTS_URL } from "@/api/urls";
+import { GET_ANNOUNCEMENTS_URL, GET_RESOURCES, GET_ARTICLES } from "@/api/urls";
 import HomeTabsSection from "./HomeTabsSection";
+import axios from "axios";
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState("announcements");
   const [selectedAgenda, setSelectedAgenda] = useState("institutional");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingResources, setloadingResources] = useState(true);
   const [loadingAnnouncements, setLoadingAnnouncements] = useState(false);
+  const [loadingArticles, setLoadingArticles] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
-  // Sample images
-  const images = {
-    symposium:
-      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&auto=format",
-    colloquium:
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&auto=format",
-    bootcamp:
-      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&auto=format",
-    researchHero: cover,
-    officeBuilding:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format",
-  };
-
+  const [resources, setResources] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [activities, setActivities] = useState([]);
+  const [articles, setArticles] = useState([]);
+
+  const images = {
+    researchHero: cover,
+  };
 
   const institutionalAgenda = [
     "Advancing interdisciplinary research collaborations",
@@ -60,38 +55,6 @@ const HomePage = () => {
     ],
   };
 
-  const forms = [
-    {
-      name: "Research Proposal Form",
-      link: "#",
-      category: "Submission",
-      size: "120KB",
-    },
-    {
-      name: "Ethics Review Application",
-      link: "#",
-      category: "Compliance",
-      size: "250KB",
-    },
-    {
-      name: "Grant Budget Template",
-      link: "#",
-      category: "Financial",
-      size: "95KB",
-    },
-    {
-      name: "Publication Support Request",
-      link: "#",
-      category: "Support",
-      size: "80KB",
-    },
-    {
-      name: "Research Equipment Request",
-      link: "#",
-      category: "Resources",
-      size: "110KB",
-    },
-  ];
   const location = useLocation();
 
   /* Go to article tab if user click Back to Article in ArctileView.tsx */
@@ -107,40 +70,6 @@ const HomePage = () => {
       setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener("scroll", handleScroll);
-
-    setTimeout(() => {
-      setActivities([
-        {
-          id: 1,
-          title: "Faculty Research Colloquium",
-          date: "July 5, 2024",
-          description:
-            "Monthly gathering for faculty researchers to present ongoing work and receive feedback.",
-          image: images.symposium,
-          location: "University Conference Hall",
-        },
-        {
-          id: 2,
-          title: "Undergraduate Research Day",
-          date: "August 12, 2024",
-          description:
-            "Celebration of undergraduate research achievements with poster presentations and awards.",
-          image: images.colloquium,
-          location: "Student Center",
-        },
-        {
-          id: 3,
-          title: "Grant Writing Workshop",
-          date: "September 3, 2024",
-          description:
-            "Hands-on training for preparing competitive grant proposals with expert facilitators.",
-          image: images.bootcamp,
-          location: "Research Building, Room 101",
-        },
-      ]);
-
-      setIsLoading(false);
-    }, 1000);
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -167,9 +96,52 @@ const HomePage = () => {
     }
   };
 
+  const fetchArticles = async (page = 1) => {
+    setLoadingArticles(true);
+    try {
+      const response = await fetch(`${GET_ARTICLES}?page=${page}`, {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch articles.");
+
+      const data = await response.json();
+      setArticles(data.results);
+      setTotalPages(Math.ceil(data.count / 8));
+      setCurrentPage(page);
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      toast("Failed to load articles.");
+    } finally {
+      setLoadingArticles(false);
+    }
+  };
+
+  const fetchResources = async () => {
+    try {
+      setloadingResources(true);
+      const res = await axios.get(GET_RESOURCES);
+      setResources(Array.isArray(res.data) ? res.data : []);
+    } catch (error) {
+      console.error("Failed to fetch resources:", error);
+      setResources([]);
+    } finally {
+      setloadingResources(false);
+    }
+  };
+
   useEffect(() => {
     fetchAnnouncements(currentPage);
   }, [currentPage]);
+
+  useEffect(() => {
+    fetchResources();
+  }, []);
+
+  useEffect(() => {
+    fetchArticles();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -196,7 +168,8 @@ const HomePage = () => {
             collegeAgenda={collegeAgenda}
             announcements={announcements}
             activities={activities}
-            forms={forms}
+            forms={resources}
+            loadingForms={loadingResources}
             loadingAnnouncements={loadingAnnouncements}
             currentPage={currentPage}
             totalPages={totalPages}

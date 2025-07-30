@@ -18,6 +18,7 @@ const HomeTabsSection = ({
   forms,
   institutionalAgenda,
   collegeAgenda,
+  loadingForms,
 }: any) => {
   return (
     <>
@@ -45,7 +46,10 @@ const HomeTabsSection = ({
         </div>
       )}
 
-      {activeTab === "forms" && <HomeForms forms={forms} />}
+      {activeTab === "forms" && (
+        <HomeForms forms={forms} loadingForms={loadingForms} />
+      )}
+
       {activeTab === "articles" && <HomeArticles />}
     </>
   );

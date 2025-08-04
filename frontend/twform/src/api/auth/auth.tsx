@@ -3,7 +3,6 @@ import {
   LOGIN_URL,
   REGISTER_URL,
   LOGOUT_URL,
-  COURSES_URL,
   AUTHENTICATED_URL,
 } from "../urls";
 
@@ -15,11 +14,6 @@ export const login = async (email, password) => {
     { email, password },
     { withCredentials: true }
   );
-  return response.data;
-};
-
-export const get_notes = async () => {
-  const response = await axios.get(COURSES_URL, { withCredentials: true });
   return response.data;
 };
 

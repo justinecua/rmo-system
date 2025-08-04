@@ -68,58 +68,87 @@ const LoginPage = () => {
     }
   };
 
+  const handleLogoClick = () => {
+    nav("/");
+  };
+
   return (
-    <div className="w-full h-[100vh] flex justify-center items-center">
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle className="text-xl w-full text-center">Login</CardTitle>
-          <CardDescription className="text-center">
-            Enter your email below to login to your account
+    <div className="w-full min-h-screen flex items-center justify-center bg-gray-50">
+      <Card className="w-full max-w-125 shadow-xl rounded-md overflow-hidden border-0 relative z-1 p-3">
+        <div className="w-full flex justify-center pt-8">
+          <div className="relative cursor-pointer" onClick={handleLogoClick}>
+            <img
+              src="../../../src/assets/images/Logo.jpg"
+              alt="Logo"
+              className="w-24 h-24 object-contain rounded-full border-4 border-white shadow-lg hover:scale-105 transition-transform duration-200"
+            />
+            <div className="absolute -inset-2 rounded-full border-2 border-[#160e73] opacity-50"></div>
+          </div>
+        </div>
+
+        <CardHeader className="pb-2">
+          <CardTitle className="text-3xl font-bold text-center text-[#160e73]">
+            SMCII RMO
+          </CardTitle>
+          <CardDescription className="text-center text-sm text-gray-600 font-medium">
+            Fostering innovation and excellence in academic research
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-gray-700 font-medium">
+                  Email
+                </Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="input your smc email"
+                  placeholder="your.email@smc.edu"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  className="py-2 px-3 border-gray-300 focus:border-[#160e73] focus:ring-2 focus:ring-[#160e73]/50 rounded-sm transition-all"
                 />
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-gray-700 font-medium">
+                  Password
+                </Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="input your password"
+                  placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  className="py-2 px-3 border-gray-300 focus:border-[#160e73] focus:ring-2 focus:ring-[#160e73]/50 rounded-sm transition-all"
                 />
               </div>
             </div>
 
             <Button
               type="submit"
-              className="mt-4 w-full bg-[#160e73] h-10"
+              className="w-full bg-[#160e73] hover:bg-[#1a1185] h-11 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-[#160e73]/30"
               disabled={loading}
             >
               {loading ? (
                 <div className="flex items-center justify-center gap-2">
                   <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                  Logging in...
+                  Authenticating...
                 </div>
               ) : (
-                "Login"
+                "Sign In"
               )}
             </Button>
           </form>
         </CardContent>
+        <CardFooter className="flex justify-center pb-6">
+          <p className="text-xs text-gray-600 text-center font-medium">
+            © {new Date().getFullYear()} SMCII Research Management Office. All
+            rights reserved.
+          </p>
+        </CardFooter>
       </Card>
     </div>
   );

@@ -25,9 +25,11 @@ const LogoutDialog = ({ open, setOpen }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
-        <DialogHeader>Confirm Logout</DialogHeader>
+        <DialogHeader className="font-bold text-lg">
+          Confirm Logout
+        </DialogHeader>
         <p className="text-gray-600">Are you sure you want to logout?</p>
-        <DialogFooter className="mt-4">
+        <DialogFooter className="mt-2">
           <Button variant="ghost" onClick={() => setOpen(false)}>
             Cancel
           </Button>

@@ -27,6 +27,8 @@ const ActivitiesForm = ({
   setStartTime,
   endTime,
   setEndTime,
+  venue,
+  setVenue,
   coverPhoto,
   setCoverPhoto,
   previewCover,
@@ -71,9 +73,20 @@ const ActivitiesForm = ({
               Activity Title
             </label>
             <Input
+              className="mt-2"
               placeholder="Enter activity title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700">Venue</label>
+            <Input
+              className="mt-2"
+              placeholder="Enter venue location"
+              value={venue}
+              onChange={(e) => setVenue(e.target.value)}
             />
           </div>
 
@@ -85,7 +98,7 @@ const ActivitiesForm = ({
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full"
+              className="w-full mt-2"
             />
           </div>
 
@@ -98,7 +111,7 @@ const ActivitiesForm = ({
                 type="time"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
-                className="w-full"
+                className="w-full mt-2"
               />
             </div>
             <div className="space-y-1">
@@ -109,7 +122,7 @@ const ActivitiesForm = ({
                 type="time"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
-                className="w-full"
+                className="w-full mt-2"
               />
             </div>
           </div>
@@ -122,7 +135,7 @@ const ActivitiesForm = ({
               placeholder="Enter detailed description of the activity"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="h-40 resize-none"
+              className="h-40 resize-none mt-2"
             />
           </div>
 
@@ -133,7 +146,7 @@ const ActivitiesForm = ({
             <Button
               onClick={() => coverInputRef.current?.click()}
               variant="outline"
-              className="w-full gap-2"
+              className="w-full mt-2 gap-2"
             >
               <Upload size={16} /> Upload Cover Photo
             </Button>

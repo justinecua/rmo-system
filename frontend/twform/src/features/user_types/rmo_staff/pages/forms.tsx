@@ -64,9 +64,22 @@ const RMOStaffResources = () => {
             </Button>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <ResourceCard forms={resources} />
-          </div>
+          {resources.length > 0 ? (
+            <>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                <ResourceCard
+                  forms={resources.slice(
+                    (currentPage - 1) * itemsPerPage,
+                    currentPage * itemsPerPage
+                  )}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center my-90">
+              <div className="text-gray-400 mb-4">No resources found</div>
+            </div>
+          )}
         </div>
       </div>
 

@@ -5,6 +5,12 @@ import ArticleCard from "@/features/user_types/rmo_staff/components/articles/Art
 import SubmitArticleDialog from "@/features/user_types/rmo_staff/components/articles/SubmitArticleDialog";
 import axios from "axios";
 import { GET_APPROVED_ARTICLES, GET_COLLEGES_URL } from "@/api/urls";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const HomeArticles = () => {
   const [filters, setFilters] = useState({
@@ -101,18 +107,20 @@ const HomeArticles = () => {
         onOpenChange={setArticleDialogOpen}
       />
 
-      <div className="mx-auto px-4">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 ">
         {/* Header */}
-        <div className="mb-3 flex w-full justify-between items-center">
+        <div className="mb-3 flex flex-col sm:flex-row w-full justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Articles</h1>
-            <p className="text-gray-600">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
+              Articles
+            </h1>
+            <p className="text-sm sm:text-base text-gray-600">
               Discover and explore academic publications across disciplines
             </p>
           </div>
-          <div>
+          <div className="w-full sm:w-auto">
             <Button
-              className="bg-white rounded-xl shadow-xs border border-gray-200 text-gray px-5 hover:shadow-md hover:bg-white transition-all duration-300"
+              className="w-full sm:w-auto bg-white rounded-xl shadow-xs border border-gray-200 text-gray px-4 sm:px-5 hover:shadow-md hover:bg-white transition-all duration-300"
               onClick={() => setArticleDialogOpen(true)}
             >
               Submit Article
@@ -121,16 +129,16 @@ const HomeArticles = () => {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-xl shadow-xs border border-gray-200 mb-6">
+        <div className="bg-white rounded-xl shadow-xs border border-gray-200 mb-6 p-1">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-            <div className="relative  md:col-span-3">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Search className="text-gray-400" />
+            <div className="relative md:col-span-8 lg:col-span-9">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
               </div>
               <input
                 type="text"
                 placeholder="Search by title, author, or keywords..."
-                className="py-3 pl-14 w-full rounded-lg border-none focus-none outline-none"
+                className="py-2 sm:py-3 pl-10 pr-4 w-full rounded-lg border-none focus:ring-2 focus:ring-blue-500 outline-none"
                 value={filters.searchQuery}
                 onChange={(e) =>
                   setFilters({ ...filters, searchQuery: e.target.value })
@@ -138,30 +146,42 @@ const HomeArticles = () => {
               />
             </div>
 
-            <div className="relative col-span-1 md:col-span-3 flex outline-none">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Filter className="h-5 w-5 text-gray-400" />
-              </div>
-              <select
-                className="pl-10 w-full rounded-lg border-gray-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all appearance-none bg-white"
-                value={filters.department}
-                onChange={(e) =>
-                  setFilters({ ...filters, department: e.target.value })
-                }
-              >
-                <option value="">All Colleges</option>
-                {colleges.map((college: any) => (
-                  <option key={college.college_id} value={college?.name}>
-                    {college?.name}
-                  </option>
-                ))}
-              </select>
+            <div className="relative md:col-span-4 lg:col-span-3 flex justify-center items-center">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start text-left "
+                  >
+                    <span className="truncate">
+                      {filters.department || "All Colleges"}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] max-h-60 overflow-y-auto">
+                  <DropdownMenuItem
+                    onClick={() => setFilters({ ...filters, department: "" })}
+                  >
+                    All Colleges
+                  </DropdownMenuItem>
+                  {colleges.map((college: any) => (
+                    <DropdownMenuItem
+                      key={college.college_id}
+                      onClick={() =>
+                        setFilters({ ...filters, department: college.name })
+                      }
+                    >
+                      {college.name}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </div>
 
-        {/* Result Count */}
-        <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        {/* Result Count and Pagination */}
+        <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <p className="text-sm text-gray-600">
               {totalArticles} {totalArticles === 1 ? "article" : "articles"}{" "}
@@ -169,47 +189,55 @@ const HomeArticles = () => {
             </p>
           </div>
 
-          <div className="flex items-center justify-center">
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-4">
-                <Button
-                  variant="outline"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((prev) => prev - 1)}
-                >
-                  Previous
-                </Button>
-                <span className="text-sm text-gray-700">
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center w-full sm:w-auto">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 w-full">
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-24"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((prev) => prev - 1)}
+                  >
+                    Previous
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-24"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage((prev) => prev + 1)}
+                  >
+                    Next
+                  </Button>
+                </div>
+                <span className="text-sm text-gray-700 whitespace-nowrap">
                   Page {currentPage} of {totalPages}
                 </span>
-                <Button
-                  variant="outline"
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((prev) => prev + 1)}
-                >
-                  Next
-                </Button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Articles List */}
         {isLoadingArticles ? (
-          <div className="col-span-full flex justify-center items-center my-90">
+          <div className="col-span-full flex justify-center items-center py-20">
             <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
           </div>
         ) : filteredArticles.length > 0 ? (
-          <div className="col-span-full text-center text-gray-500 dark:text-gray-400 py-8 my-90">
-            No announcements available at the moment.
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {filteredArticles.map((article) => (
+              <ArticleCard key={article.article_id} article={article} />
+            ))}
           </div>
         ) : (
-          <div className="bg-white rounded-xl shadow-xs border border-gray-200 h-[50vh] flex justify-center items-center flex-col text-center">
-            <Search className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-1">
+          <div className="bg-white rounded-xl shadow-xs border border-gray-200 min-h-[50vh] flex justify-center items-center flex-col text-center p-6">
+            <Search className="h-10 w-10 sm:h-12 sm:w-12 mx-auto text-gray-400 mb-3 sm:mb-4" />
+            <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-1">
               No publications found
             </h3>
-            <p className="text-gray-500">
+            <p className="text-sm sm:text-base text-gray-500">
               Try adjusting your search or filter criteria
             </p>
           </div>

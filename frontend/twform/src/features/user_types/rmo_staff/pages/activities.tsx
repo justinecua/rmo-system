@@ -46,7 +46,7 @@ const RMOStaffActivities = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-
+  const [venue, setVenue] = useState("");
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -80,6 +80,7 @@ const RMOStaffActivities = () => {
     formData.append("scheduled_date", date);
     formData.append("start_time", startTime);
     formData.append("end_time", endTime);
+    formData.append("venue", venue);
 
     if (coverPhoto) {
       formData.append("cover_photo", coverPhoto);
@@ -233,6 +234,8 @@ const RMOStaffActivities = () => {
         startTime={startTime}
         setStartTime={setStartTime}
         endTime={endTime}
+        venue={venue}
+        setVenue={setVenue}
         setEndTime={setEndTime}
         coverPhoto={coverPhoto}
         setCoverPhoto={setCoverPhoto}

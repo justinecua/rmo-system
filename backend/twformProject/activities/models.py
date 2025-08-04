@@ -6,6 +6,7 @@ class Activity(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=2000)
     scheduled_date = models.DateField(null=True)
+    venue = models.CharField(max_length=255, blank=True, null=True)
     start_time = models.TimeField(null=True)
     end_time = models.TimeField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)

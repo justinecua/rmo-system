@@ -11,28 +11,39 @@ const HomeTabsSection = ({
   setSelectedAgenda,
   announcements,
   loadingAnnouncements,
-  currentPage,
-  totalPages,
-  setCurrentPage,
   activities,
+  currentActivitiesPage,
+  activitiesTotalPages,
+  setActivitiesPage,
+  currentAnnouncementsPage,
+  announcementsTotalPages,
+  setAnnouncementsPage,
   forms,
   institutionalAgenda,
   collegeAgenda,
   loadingForms,
 }: any) => {
+  console.log(activities);
   return (
-    <>
+    <div className="container mx-auto px-4 sm:px-6 py-6">
       {activeTab === "announcements" && (
         <HomeAnnouncements
           announcements={announcements}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          setCurrentPage={setCurrentPage}
+          currentPage={currentAnnouncementsPage}
+          totalPages={announcementsTotalPages}
+          setCurrentPage={setAnnouncementsPage}
           loadingAnnouncements={loadingAnnouncements}
         />
       )}
 
-      {activeTab === "activities" && <HomeActivities activities={activities} />}
+      {activeTab === "activities" && (
+        <HomeActivities
+          activities={activities}
+          currentPage={currentActivitiesPage}
+          totalPages={activitiesTotalPages}
+          setCurrentPage={setActivitiesPage}
+        />
+      )}
 
       {activeTab === "research-agenda" && (
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
@@ -51,7 +62,7 @@ const HomeTabsSection = ({
       )}
 
       {activeTab === "articles" && <HomeArticles />}
-    </>
+    </div>
   );
 };
 

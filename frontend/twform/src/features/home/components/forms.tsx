@@ -2,7 +2,17 @@ import { useEffect, useState } from "react";
 import ResourceCard from "./resources/resourcesCard";
 
 const HomeForms = ({ forms = [], loadingForms }) => {
-  const hasForms = Array.isArray(forms) && forms.length > 0;
+  const [resourceList, setResourceList] = useState(forms);
+
+  useEffect(() => {
+    setResourceList(forms);
+  }, [forms]);
+
+  const handleDelete = (id) => {
+    setResourceList((prev) => prev.filter((f) => f.resource_id !== id));
+  };
+
+  const hasForms = Array.isArray(resourceList) && resourceList.length > 0;
 
   return (
     <section>
@@ -27,7 +37,7 @@ const HomeForms = ({ forms = [], loadingForms }) => {
             Loading resources...
           </p>
         ) : hasForms ? (
-          <ResourceCard forms={forms} />
+          <ResourceCard forms={resourceList} onDelete={handleDelete} />
         ) : (
           <div className="text-center text-gray-500 dark:text-gray-400 h-[60vh] flex justify-center items-center w-full">
             No forms found

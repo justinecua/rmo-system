@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
     path("uploadResource/", views.uploadResource, name='uploadResource'),
     path("getResources/", views.getResources, name='getResource'),
+    path("deleteResource/<int:resource_id>/", views.deleteResource, name='deleteResource'),
 ]

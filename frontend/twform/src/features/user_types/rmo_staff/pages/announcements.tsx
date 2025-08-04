@@ -150,7 +150,7 @@ const RMOStaffAnnouncements = () => {
 
       const data = await response.json();
       setAnnouncements(data.results);
-      setTotalPages(Math.ceil(data.count / 8));
+      setTotalPages(Math.ceil(data.count / 6));
       setCurrentPage(page);
     } catch (error) {
       console.error("Fetch Error:", error);
@@ -218,30 +218,30 @@ const RMOStaffAnnouncements = () => {
         )}
       >
         <div className="bg-white p-5 min-h-screen rounded-md">
-          <div className="flex justify-between items-center mb-4 ">
-            <h3 className="text-lg font-semibold text-gray-800">
+          <div className="flex flex-row flex-wrap items-center justify-between gap-3 mb-4">
+            <h3 className="text-lg font-semibold text-gray-800 min-w-[150px]">
               Announcements
             </h3>
 
-            <div className="flex h-full items-center justify-center gap-5">
-              <div>
-                {totalPages > 1 && (
-                  <PaginationControls
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={setCurrentPage}
-                  />
-                )}
-              </div>
-              <div>
-                {" "}
-                <Button onClick={() => setIsOpenModal(true)} className="gap-2">
-                  <PlusCircle size={16} />
-                  Create Announcement
-                </Button>
-              </div>
+            <div className="flex flex-nowrap items-center gap-3">
+              {totalPages > 1 && (
+                <PaginationControls
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              )}
+              <Button
+                onClick={() => setIsOpenModal(true)}
+                className="gap-2 shrink-0"
+              >
+                <PlusCircle size={16} />
+                <span className="hidden sm:inline">Create Announcement</span>
+                <span className="sm:hidden">Create</span>
+              </Button>
             </div>
           </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {loadingAnnouncements ? (
               <div className="col-span-full flex justify-center items-center my-90">

@@ -115,7 +115,7 @@ const RMOStaffSidebar = ({
                 {isActive && (
                   <span
                     className={cn(
-                      "absolute left-0 w-1 h-6 bg-blue-500 rounded-r-full transition-all duration-300",
+                      "absolute left-0 w-1 h-6rounded-r-full transition-all duration-300",
                       collapsed
                         ? "left-1/2 transform -translate-x-1/2 w-0.5 h-4"
                         : ""

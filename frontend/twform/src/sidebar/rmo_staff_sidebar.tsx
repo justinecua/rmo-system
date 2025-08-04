@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/useAuth";
+import LogoutDialog from "@/features/auth/pages/logoutDialog";
 
 const LS_KEY = "rmoSidebarCollapsed";
 
@@ -28,6 +29,7 @@ const RMOStaffSidebar = ({
   const location = useLocation();
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const { user, loading } = useAuth();
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(LS_KEY, JSON.stringify(collapsed));
@@ -57,7 +59,12 @@ const RMOStaffSidebar = ({
       icon: ScrollText,
       path: "/research_staff/articles",
     },
-    { label: "Logout", icon: LogOut, path: "/logout" },
+    {
+      label: "Logout",
+      icon: LogOut,
+      path: null,
+      action: () => setShowLogoutDialog(true),
+    },
   ];
 
   return (
@@ -98,7 +105,7 @@ const RMOStaffSidebar = ({
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
 
-            return (
+            return item.path ? (
               <Link
                 key={i}
                 to={item.path}
@@ -111,18 +118,6 @@ const RMOStaffSidebar = ({
                 onMouseEnter={() => setHoveredItem(i)}
                 onMouseLeave={() => setHoveredItem(null)}
               >
-                {/* Active indicator with smooth motion */}
-                {isActive && (
-                  <span
-                    className={cn(
-                      "absolute left-0 w-1 h-6rounded-r-full transition-all duration-300",
-                      collapsed
-                        ? "left-1/2 transform -translate-x-1/2 w-0.5 h-4"
-                        : ""
-                    )}
-                  ></span>
-                )}
-
                 <div
                   className={cn(
                     "flex items-center w-full transition-all duration-300",
@@ -138,7 +133,6 @@ const RMOStaffSidebar = ({
                         isActive ? "text-blue-600" : "text-gray-600"
                       )}
                     />
-                    {/* Subtle pulse effect on hover */}
                     {hoveredItem === i && (
                       <span className="absolute inset-0 rounded-full bg-current opacity-10 animate-ping duration-1000"></span>
                     )}
@@ -155,15 +149,54 @@ const RMOStaffSidebar = ({
                     {item.label}
                   </span>
                 </div>
-
-                {/* Hover underline effect */}
-                {!collapsed && hoveredItem === i && (
-                  <span className="absolute left-4 right-4 bottom-2 h-0.5 bg-blue-500 opacity-20 rounded-full transition-all duration-300"></span>
-                )}
               </Link>
+            ) : (
+              <button
+                key={i}
+                onClick={item.action}
+                className={cn(
+                  "relative w-full text-left flex items-center px-4 py-3 rounded-lg transition-all duration-300 group",
+                  "hover:bg-gray-50 active:scale-95 text-gray-600",
+                  collapsed ? "justify-center px-0" : "justify-start"
+                )}
+                onMouseEnter={() => setHoveredItem(i)}
+                onMouseLeave={() => setHoveredItem(null)}
+              >
+                <div
+                  className={cn(
+                    "flex items-center w-full transition-all duration-300",
+                    collapsed ? "justify-center" : "justify-start gap-3"
+                  )}
+                >
+                  <div className="relative">
+                    <Icon
+                      size={19}
+                      className={cn(
+                        "shrink-0 transition-all duration-200",
+                        hoveredItem === i ? "scale-110" : "scale-100"
+                      )}
+                    />
+                    {hoveredItem === i && (
+                      <span className="absolute inset-0 rounded-full bg-current opacity-10 animate-ping duration-1000"></span>
+                    )}
+                  </div>
+                  <span
+                    className={cn(
+                      "transition-all duration-300 ease-out font-medium whitespace-nowrap",
+                      "transform origin-left",
+                      collapsed
+                        ? "opacity-0 w-0 -translate-x-2 overflow-hidden"
+                        : "opacity-100 w-auto translate-x-0"
+                    )}
+                  >
+                    {item.label}
+                  </span>
+                </div>
+              </button>
             );
           })}
         </nav>
+        <LogoutDialog open={showLogoutDialog} setOpen={setShowLogoutDialog} />
 
         {/* User Profile with smooth appearance */}
         <div

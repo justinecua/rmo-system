@@ -125,14 +125,14 @@ const RMOStaffActivities = () => {
       });
 
       if (!response.ok) {
-        toast.error("Failed to delete announcement.");
+        toast.error("Failed to delete activity.");
         return;
       }
 
       setShowDeleteDialog(false);
       setDeletingId(null);
 
-      toast.success("Announcement deleted.");
+      toast.success("Activity deleted.");
       await fetchActivities();
     } catch (error) {
       console.error("Delete Error:", error);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ResourceCard from "./resources/resourcesCard";
+import ResourceCard from "../../user_types/rmo_staff/components/resources/resourcesCard";
 
 const HomeForms = ({ forms = [], loadingForms }) => {
   const [resourceList, setResourceList] = useState(forms);

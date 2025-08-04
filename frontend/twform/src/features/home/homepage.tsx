@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import cover from "../../../src/assets/images/cover.jpg";
 import HomeHeader from "./components/header";
 import HomeHeroSection from "./components/heroSection";
-import HomeFooter from "./components/footer";
+import HomeFooter from "../user_types/rmo_staff/components/footer";
 import { toast } from "sonner";
 import { useLocation } from "react-router-dom";
 

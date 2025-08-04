@@ -16,7 +16,7 @@ import ArticleCard from "./ArticleCard";
 import HomeHeroSection from "@/features/home/components/heroSection";
 import cover from "../../../../../assets/images/cover.jpg";
 import HomeHeader from "@/features/home/components/header";
-import HomeFooter from "@/features/home/components/footer";
+import HomeFooter from "@/features/user_types/rmo_staff/components/footer";
 
 const ArticleView = () => {
   const [activeTab, setActiveTab] = useState("articles");

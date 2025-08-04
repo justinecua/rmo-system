@@ -7,11 +7,12 @@ import { Home, PlusCircle } from "lucide-react";
 import ResourceModal from "../components/resources/ResourceModal";
 import axios from "axios";
 import { GET_RESOURCES } from "@/api/urls";
-import ResourceCard from "@/features/home/components/resources/resourcesCard";
+import ResourceCard from "@/features/user_types/rmo_staff/components/resources/resourcesCard";
 
 const RMOStaffResources = () => {
   const [openModal, setIsOpenModal] = useState(false);
   const [resources, setResources] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -30,6 +31,7 @@ const RMOStaffResources = () => {
   }, [collapsed]);
 
   const fetchResources = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(GET_RESOURCES);
       console.log(res);
@@ -37,6 +39,8 @@ const RMOStaffResources = () => {
     } catch (error) {
       console.error("Failed to fetch resources:", error);
       setResources([]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,7 +68,11 @@ const RMOStaffResources = () => {
             </Button>
           </div>
 
-          {resources.length > 0 ? (
+          {isLoading ? (
+            <div className="col-span-full flex justify-center items-center my-90">
+              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : resources.length > 0 ? (
             <>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 <ResourceCard
@@ -72,6 +80,7 @@ const RMOStaffResources = () => {
                     (currentPage - 1) * itemsPerPage,
                     currentPage * itemsPerPage
                   )}
+                  onDelete={fetchResources}
                 />
               </div>
             </>

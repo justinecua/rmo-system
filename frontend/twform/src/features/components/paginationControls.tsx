@@ -35,8 +35,9 @@ const PaginationControls = ({
   const pages = getPageNumbers(currentPage, totalPages);
 
   return (
-    <div className="flex justify-center gap-2 flex-wrap">
+    <div className="flex justify-center items-center gap-2 flex-wrap">
       <Button
+        className="text-sm"
         variant="outline"
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
@@ -54,7 +55,7 @@ const PaginationControls = ({
             key={page}
             variant={page === currentPage ? "default" : "outline"}
             onClick={() => onPageChange(page as number)}
-            className="w-10 h-10 p-0 text-sm"
+            className="w-8 h-8 p-1 text-sm"
           >
             {page}
           </Button>
@@ -62,6 +63,7 @@ const PaginationControls = ({
       )}
 
       <Button
+        className="text-sm"
         variant="outline"
         disabled={currentPage === totalPages}
         onClick={() => onPageChange(currentPage + 1)}

@@ -23,6 +23,7 @@ const ArticleDetailsDialog = ({
   getMediaUrl,
   isLoading = false,
 }: ArticleDetailsDialogProps) => {
+  const backendUrl = import.meta.env.VITE_BACKEND;
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="min-w-[50vw] max-h-[90vh] overflow-y-auto rounded-lg border bg-white p-6">
@@ -88,7 +89,9 @@ const ArticleDetailsDialog = ({
               <div className="space-y-1">
                 <h4 className="text-sm font-medium text-gray-700">PDF File</h4>
                 <a
-                  href={getMediaUrl(article.articleFiles[0]?.pdf_path)}
+                  href={`${backendUrl}${getMediaUrl(
+                    article.articleFiles[0]?.pdf_path
+                  )}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-700 text-sm"

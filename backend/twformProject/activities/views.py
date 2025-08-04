@@ -30,6 +30,7 @@ def activities(request):
     scheduled_date = request.data.get('scheduled_date')
     start_time = request.data.get('start_time')
     end_time = request.data.get('end_time')
+    venue = request.data.get('venue')
     cover_photo = request.FILES.get('cover_photo')
     additional_images = request.FILES.getlist('additional_images')
 
@@ -39,6 +40,7 @@ def activities(request):
         scheduled_date=scheduled_date,
         start_time=start_time,
         end_time=end_time,
+        venue=venue, 
     )
 
     if cover_photo:
@@ -59,9 +61,9 @@ def activities(request):
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 8  # default page size
+    page_size = 6  # default page size
     page_size_query_param = 'page_size'
-    max_page_size = 100
+    max_page_size = 1000
 
 @api_view(['GET'])
 @permission_classes([AllowAny]) 

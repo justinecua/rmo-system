@@ -14,6 +14,8 @@ import { UploadCloud, X } from "lucide-react";
 
 const ResourceModal = ({ open, setOpen }) => {
   const [title, setTitle] = useState("");
+  const [subject, setSubject] = useState("");
+
   const [file, setFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const MAX_FILE_SIZE_MB = 10;
@@ -31,6 +33,7 @@ const ResourceModal = ({ open, setOpen }) => {
 
     const formData = new FormData();
     formData.append("title", title);
+    formData.append("subject", subject);
     formData.append("file", file);
 
     try {
@@ -43,6 +46,7 @@ const ResourceModal = ({ open, setOpen }) => {
       toast.success("Resource uploaded successfully!");
       setOpen(false);
       setTitle("");
+      setSubject("");
       setFile(null);
     } catch (err) {
       console.error("Upload failed", err);
@@ -70,6 +74,17 @@ const ResourceModal = ({ open, setOpen }) => {
               placeholder="Enter resource title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              className="rounded-md border-gray-300 focus:border-primary focus:ring-primary"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Subject
+            </label>
+            <Input
+              placeholder="Enter subject"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
               className="rounded-md border-gray-300 focus:border-primary focus:ring-primary"
             />
           </div>

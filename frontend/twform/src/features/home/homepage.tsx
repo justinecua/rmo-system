@@ -9,7 +9,6 @@ import { useLocation } from "react-router-dom";
 import {
   GET_ANNOUNCEMENTS_URL,
   GET_RESOURCES,
-  GET_ARTICLES,
   GET_ACTIVITIES_URL,
 } from "@/api/urls";
 import HomeTabsSection from "./HomeTabsSection";
@@ -30,6 +29,11 @@ const HomePage = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [activities, setActivities] = useState([]);
   const [articles, setArticles] = useState([]);
+  const [announcementsPage, setAnnouncementsPage] = useState(1);
+  const [activitiesPage, setActivitiesPage] = useState(1);
+
+  const [announcementsTotalPages, setAnnouncementsTotalPages] = useState(1);
+  const [activitiesTotalPages, setActivitiesTotalPages] = useState(1);
 
   const images = {
     researchHero: cover,
@@ -92,35 +96,13 @@ const HomePage = () => {
 
       const data = await response.json();
       setAnnouncements(data.results);
-      setTotalPages(Math.ceil(data.count / 8));
-      setCurrentPage(page);
+      setAnnouncementsTotalPages(Math.ceil(data.count / 6));
+      setAnnouncementsPage(page);
     } catch (error) {
       console.error("Fetch Error:", error);
       toast("Failed to load announcements.");
     } finally {
       setLoadingAnnouncements(false);
-    }
-  };
-
-  const fetchArticles = async (page = 1) => {
-    setLoadingArticles(true);
-    try {
-      const response = await fetch(`${GET_ARTICLES}?page=${page}`, {
-        method: "GET",
-        credentials: "include",
-      });
-
-      if (!response.ok) throw new Error("Failed to fetch articles.");
-
-      const data = await response.json();
-      setArticles(data.results);
-      setTotalPages(Math.ceil(data.count / 8));
-      setCurrentPage(page);
-    } catch (error) {
-      console.error("Fetch Error:", error);
-      toast("Failed to load articles.");
-    } finally {
-      setLoadingArticles(false);
     }
   };
 
@@ -137,33 +119,29 @@ const HomePage = () => {
     }
   };
 
-  const fetchActivities = async () => {
+  const fetchActivities = async (page = 1) => {
     try {
-      setLoadingActivities(true);
-      const res = await axios.get(GET_ACTIVITIES_URL);
-      setActivities(Array.isArray(res.data) ? res.data : []);
-    } catch (error) {
-      console.error("Failed to fetch resources:", error);
-      setActivities([]);
-    } finally {
-      setLoadingActivities(false);
+      const res = await axios.get(`${GET_ACTIVITIES_URL}?page=${page}`);
+      setActivities(res.data.results);
+      setActivitiesTotalPages(Math.ceil(res.data.count / 6));
+      setActivitiesPage(page);
+    } catch (err) {
+      console.error("Failed to fetch activities:", err);
     }
   };
 
+  // Announcements
   useEffect(() => {
-    fetchAnnouncements(currentPage);
-  }, [currentPage]);
+    fetchAnnouncements(announcementsPage);
+  }, [announcementsPage]);
+
+  // Activities
+  useEffect(() => {
+    fetchActivities(activitiesPage);
+  }, [activitiesPage]);
 
   useEffect(() => {
     fetchResources();
-  }, []);
-
-  useEffect(() => {
-    fetchActivities();
-  }, []);
-
-  useEffect(() => {
-    fetchArticles();
   }, []);
 
   useEffect(() => {
@@ -197,12 +175,12 @@ const HomePage = () => {
             collegeAgenda={collegeAgenda}
             announcements={announcements}
             activities={activities}
-            forms={resources}
-            loadingForms={loadingResources}
-            loadingAnnouncements={loadingAnnouncements}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            setCurrentPage={setCurrentPage}
+            currentActivitiesPage={activitiesPage}
+            activitiesTotalPages={activitiesTotalPages}
+            setActivitiesPage={setActivitiesPage}
+            currentAnnouncementsPage={announcementsPage}
+            announcementsTotalPages={announcementsTotalPages}
+            setAnnouncementsPage={setAnnouncementsPage}
           />
         )}
       </main>

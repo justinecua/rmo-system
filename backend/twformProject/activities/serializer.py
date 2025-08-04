@@ -16,4 +16,5 @@ class ActivitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Activity
-        fields = ['activity_id', 'title', 'description', 'scheduled_date', 'photos', 'end_time', 'start_time']
+        fields = ['activity_id', 'title', 'description', 'scheduled_date', 
+                'photos', 'end_time', 'start_time', 'venue']

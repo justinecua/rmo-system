@@ -56,7 +56,7 @@ def announcements(request):
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 8  # default page size
+    page_size = 6  # default page size
     page_size_query_param = 'page_size'
     max_page_size = 100
 

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { DEL_RESOURCES } from "@/api/urls";
 import { DeleteConfirmationDialog } from "../DeleteConfirmationDialog";
 
-const ResourceCard = ({ forms, onDelete }) => {
+const ResourceCard = ({ forms, onDelete, showDelete = true }) => {
   const backendUrl = import.meta.env.VITE_BACKEND;
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [resourceToDelete, setResourceToDelete] = useState(null);
@@ -63,58 +63,56 @@ const ResourceCard = ({ forms, onDelete }) => {
 
   return (
     <>
-      <div className="grid grid-cols-1">
-        {forms.map((form) => {
-          const fullLink = `${backendUrl}${form.file_url}`;
-          const fileType = form.file_url.split(".").pop().toUpperCase();
+      {forms.map((form) => {
+        const fullLink = `${backendUrl}${form.file_url}`;
+        const fileType = form.file_url.split(".").pop().toUpperCase();
 
-          return (
-            <div
-              key={form.resource_id}
-              className="group relative flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+        return (
+          <div
+            key={form.resource_id}
+            className="group relative flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+          >
+            <a
+              href={fullLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative flex h-40 items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-6 dark:from-gray-700 dark:to-gray-800"
             >
-              <a
-                href={fullLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative flex h-40 items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-6 dark:from-gray-700 dark:to-gray-800"
-              >
-                <div className="rounded-lg bg-white/90 p-3 shadow-sm backdrop-blur-sm dark:bg-gray-900/90">
-                  <FileText className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                </div>
-                <span className="absolute bottom-3 right-3 rounded-full bg-white/90 px-2 py-1 text-xs font-medium text-gray-600 dark:bg-gray-900/90 dark:text-gray-300">
-                  {fileType}
+              <div className="rounded-lg bg-white/90 p-3 shadow-sm backdrop-blur-sm dark:bg-gray-900/90">
+                <FileText className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <span className="absolute bottom-3 right-3 rounded-full bg-white/90 px-2 py-1 text-xs font-medium text-gray-600 dark:bg-gray-900/90 dark:text-gray-300">
+                {fileType}
+              </span>
+            </a>
+
+            <div className="flex flex-1 flex-col p-4">
+              <div className="mb-3 flex-1">
+                <h3 className="line-clamp-2 text-sm font-medium text-gray-900 dark:text-white sm:text-base">
+                  {form.title}
+                </h3>
+                {form.subject && (
+                  <p className="line-clamp-1 text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
+                    {form.subject}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-gray-400 dark:text-gray-500">
+                  {formatFileSize(form.size)}
                 </span>
-              </a>
-
-              <div className="flex flex-1 flex-col p-4">
-                <div className="mb-3 flex-1">
-                  <h3 className="line-clamp-2 text-sm font-medium text-gray-900 dark:text-white sm:text-base">
-                    {form.title}
-                  </h3>
-                  {form.subject && (
-                    <p className="line-clamp-1 text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
-                      {form.subject}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-400 dark:text-gray-500">
-                    {formatFileSize(form.size)}
-                  </span>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-8 w-8 p-2 sm:h-auto sm:w-auto sm:px-3"
-                      onClick={() => window.open(fullLink, "_blank")}
-                    >
-                      <span className="sr-only sm:not-sr-only sm:mr-2">
-                        Open
-                      </span>
-                      <ExternalLink className="h-4 w-4" />
-                    </Button>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-8 w-8 p-2 sm:h-auto sm:w-auto sm:px-3"
+                    onClick={() => window.open(fullLink, "_blank")}
+                  >
+                    <span className="sr-only sm:not-sr-only sm:mr-2">Open</span>
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
+                  {showDelete && (
                     <Button
                       size="sm"
                       variant="destructive"
@@ -124,13 +122,13 @@ const ResourceCard = ({ forms, onDelete }) => {
                       <span>Delete</span>
                       <Trash2 className="h-4 w-4" />
                     </Button>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
-          );
-        })}
-      </div>
+          </div>
+        );
+      })}
 
       {/* Delete Dialog */}
       <DeleteConfirmationDialog

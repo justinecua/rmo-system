@@ -22,9 +22,6 @@ const HomePage = () => {
   const [loadingResources, setloadingResources] = useState(true);
   const [loadingAnnouncements, setLoadingAnnouncements] = useState(false);
   const [loadingArticles, setLoadingArticles] = useState(false);
-  const [loadingActivities, setLoadingActivities] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [resources, setResources] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [activities, setActivities] = useState([]);
@@ -110,6 +107,7 @@ const HomePage = () => {
     try {
       setloadingResources(true);
       const res = await axios.get(GET_RESOURCES);
+      console.log(res);
       setResources(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       console.error("Failed to fetch resources:", error);
@@ -181,6 +179,8 @@ const HomePage = () => {
             currentAnnouncementsPage={announcementsPage}
             announcementsTotalPages={announcementsTotalPages}
             setAnnouncementsPage={setAnnouncementsPage}
+            forms={resources}
+            loadingForms={loadingResources}
           />
         )}
       </main>

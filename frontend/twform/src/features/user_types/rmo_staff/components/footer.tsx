@@ -2,8 +2,8 @@ const HomeFooter = () => {
   return (
     <footer className="bg-[#03011b] text-white py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
+        <div className="flex justify-between w-full">
+          <div className="w-[50%]">
             <h3 className="text-lg font-semibold mb-4">
               SMCII Research Management Office
             </h3>
@@ -14,7 +14,7 @@ const HomeFooter = () => {
               the quality of life of the community.
             </p>
           </div>
-          <div>
+          {/* <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm text-gray-400">
               <li>
@@ -38,8 +38,8 @@ const HomeFooter = () => {
                 </a>
               </li>
             </ul>
-          </div>
-          <div>
+          </div> */}
+          <div className="w-[30%]">
             <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
             <address className="not-italic text-sm text-gray-400">
               <p>St. Michael's College, Quezon Avenue, Poblacion</p>
@@ -48,6 +48,7 @@ const HomeFooter = () => {
             </address>
           </div>
         </div>
+
         <div className="mt-12 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-gray-400">
             © 2025 SMCII Research Management Office. All rights reserved.

@@ -37,7 +37,11 @@ const HomeForms = ({ forms = [], loadingForms }) => {
             Loading resources...
           </p>
         ) : hasForms ? (
-          <ResourceCard forms={resourceList} onDelete={handleDelete} />
+          <ResourceCard
+            forms={resourceList}
+            onDelete={handleDelete}
+            showDelete={false}
+          />
         ) : (
           <div className="text-center text-gray-500 dark:text-gray-400 h-[60vh] flex justify-center items-center w-full">
             No forms found

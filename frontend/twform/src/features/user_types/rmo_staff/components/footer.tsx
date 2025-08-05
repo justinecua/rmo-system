@@ -1,9 +1,9 @@
 const HomeFooter = () => {
   return (
-    <footer className="bg-[#03011b] text-white py-12">
+    <footer className="bg-[#03011b] text-white py-8 md:py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between w-full">
-          <div className="w-[50%]">
+        <div className="flex flex-col md:flex-row justify-between gap-8 w-full">
+          <div className="w-full md:w-[50%] text-center md:text-left">
             <h3 className="text-lg font-semibold mb-4">
               SMCII Research Management Office
             </h3>
@@ -14,32 +14,8 @@ const HomeFooter = () => {
               the quality of life of the community.
             </p>
           </div>
-          {/* <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-sm text-gray-400">
-              <li>
-                <a href="#" className="hover:text-white">
-                  Research Policies
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Funding Opportunities
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Ethics Committee
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white">
-                  Publications
-                </a>
-              </li>
-            </ul>
-          </div> */}
-          <div className="w-[30%]">
+
+          <div className="w-full md:w-[30%] text-center md:text-left">
             <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
             <address className="not-italic text-sm text-gray-400">
               <p>St. Michael's College, Quezon Avenue, Poblacion</p>
@@ -49,11 +25,11 @@ const HomeFooter = () => {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-gray-400">
+        <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-sm text-gray-400 text-center md:text-left">
             © 2025 SMCII Research Management Office. All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
+          <div className="flex space-x-6 mt-4 md:mt-0 justify-center md:justify-start">
             <a href="#" className="text-gray-400 hover:text-white">
               <span className="sr-only">Facebook</span>
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">

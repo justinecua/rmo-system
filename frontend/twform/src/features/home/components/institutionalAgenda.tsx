@@ -175,8 +175,14 @@ const HomeInstitutionalAgenda = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <section className="text-center mb-16 max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+      <section className="mb-5 mt-10">
+        <PillarCircles
+          activePillar={activePillar}
+          setActivePillar={handlePillarClick}
+        />
+      </section>
+      <section className="text-center mb-5 max-w-3xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
           Institutional Research Agenda
         </h1>
         <div className="bg-white border border-gray-200 rounded-lg p-6">
@@ -187,19 +193,7 @@ const HomeInstitutionalAgenda = () => {
           </p>
         </div>
       </section>
-
-      <section className="mb-20">
-        <PillarCircles
-          activePillar={activePillar}
-          setActivePillar={handlePillarClick}
-        />
-      </section>
-
       <section className="mb-16">
-        <h2 className="text-lg font-semibold text-center text-gray-500 mb-8">
-          There are five research areas that form the foundation of a
-          comprehensive research agenda
-        </h2>
         <div className="flex flex-col gap-6">
           {pillarsData.map((pillar) => (
             <div key={pillar.id} ref={setRef(pillar.id)}>

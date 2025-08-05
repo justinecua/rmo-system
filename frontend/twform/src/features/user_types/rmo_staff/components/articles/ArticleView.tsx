@@ -155,7 +155,7 @@ const ArticleView = () => {
               </div>
             ))}
 
-            <div className="mt-5 mb-10 pt-6 border-t border-gray-200">
+            {/* <div className="mt-5 mb-10 pt-6 border-t border-gray-200">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">
                 References
               </h3>
@@ -172,7 +172,7 @@ const ArticleView = () => {
                   </p>
                 )}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 

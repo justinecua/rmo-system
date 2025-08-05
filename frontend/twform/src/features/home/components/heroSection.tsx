@@ -1,6 +1,6 @@
 const HomeHeroSection = ({ images }) => {
   return (
-    <div className="relative bg-indigo-800 overflow-hidden">
+    <div className="h-115 relative bg-indigo-800 overflow-hidden">
       <div className="absolute inset-0">
         <img
           className="w-full h-full object-cover opacity-30"
@@ -9,11 +9,11 @@ const HomeHeroSection = ({ images }) => {
         />
         <div className="absolute inset-0 bg-indigo-800 mix-blend-multiply"></div>
       </div>
-      <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 text-center">
-        <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
+      <div className="relative max-w-7xl mx-auto py-16 sm:py-24 md:py-32 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center h-full text-center">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white px-4">
           SMCII Research Management Office
         </h1>
-        <p className="mt-2 text-xl text-indigo-100 max-w-3xl mx-auto">
+        <p className=" sm:mt-3 text-lg sm:text-xl text-indigo-100 max-w-3xl mx-auto px-4">
           Fostering innovation and excellence in academic research
         </p>
       </div>

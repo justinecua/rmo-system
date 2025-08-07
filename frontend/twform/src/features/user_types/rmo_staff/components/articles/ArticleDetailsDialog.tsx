@@ -89,9 +89,7 @@ const ArticleDetailsDialog = ({
               <div className="space-y-1">
                 <h4 className="text-sm font-medium text-gray-700">PDF File</h4>
                 <a
-                  href={`${backendUrl}${getMediaUrl(
-                    article.articleFiles[0]?.pdf_path
-                  )}`}
+                  href={`${getMediaUrl(article.articleFiles[0]?.pdf_path)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-700 text-sm"

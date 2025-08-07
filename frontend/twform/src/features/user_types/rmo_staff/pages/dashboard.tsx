@@ -225,6 +225,7 @@ const RMOStaffDashboard = () => {
                         {item.type === "article" && (
                           <FileText className="h-5 w-5 text-purple-500" />
                         )}
+                        *
                       </div>
                       <div>
                         <h4 className="font-medium">{item.title}</h4>

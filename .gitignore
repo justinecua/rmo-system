@@ -27,6 +27,10 @@ Desktop.ini
 .idea/
 *.swp
 
+#backup data
+backup.sql
+data.json
+
 # ======================
 # FRONTEND (React + Vite)
 # ======================
@@ -70,6 +74,7 @@ backend/*.mo
 backend/*.pot
 backend/debug.log
 backend/celerybeat-schedule
+backend/twformProject/data2.json
 
 # Uncomment if excluding initial migrations (not recommended for teams)
 # backend/**/migrations/

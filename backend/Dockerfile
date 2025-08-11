@@ -18,4 +18,4 @@ COPY requirements.txt /api/
 RUN pip install -r requirements.txt
 COPY . /api/
 RUN apt-get install -y apt-utils vim curl
-EXPOSE 8001
+EXPOSE 8005

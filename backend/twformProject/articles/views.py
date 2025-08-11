@@ -202,10 +202,21 @@ def get_approved_articles(request):
 
         paginator = Paginator(articles, page_size)
         page_obj = paginator.get_page(page_number)
-        serializer = ArticleSerializer(page_obj, many=True)
+        
+        # Serialize the data with additional fields
+        serialized_data = []
+        for article in page_obj:
+            article_data = ArticleSerializer(article).data
+            # Add ISSN number
+            article_data['issn'] = "ISSN 1656-8117"
+            # Add PDF URL if available
+            if article.articleFiles.exists():
+                pdf_file = article.articleFiles.first().pdf_path
+                article_data['pdf_url'] = request.build_absolute_uri(pdf_file.url)
+            serialized_data.append(article_data)
 
         return Response({
-            "data": serializer.data,
+            "data": serialized_data,
             "pagination": {
                 "total_items": paginator.count,
                 "total_pages": paginator.num_pages,
@@ -217,6 +228,7 @@ def get_approved_articles(request):
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
     
 @api_view(["GET"])
 @permission_classes([AllowAny])

@@ -44,40 +44,8 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
 
 SITE_ID = 1
 
-CORS_ALLOWED_ORIGINS = [
-    "https://example.com",
-    "https://sub.example.com",
-    "http://localhost:8080",
-    "http://127.0.0.1:9000",
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "http://192.168.1.9:3000",
-    "http://192.168.1.9:8001",  
-    "http://192.168.1.9:5173",
-    "http://10.15.20.221:8001",
-    "http://10.15.20.221:5173",
-    "http://10.15.20.152:8001",
-    "http://10.15.20.152:5173",
-    "http://10.15.20.237:5173",
-    "http://10.15.20.237:8001",
-    "http://10.14.20.79:8005",
-    "http://10.14.20.79:8001",
-    "http://172.19.0.1:5173",
-    "http://172.19.0.2:5173",
-    "http://172.19.0.3:5173",
-    "http://172.19.0.4:5173",
-    "http://172.19.0.5:5173",
-    "http://172.19.0.6:5173",
-    "http://192.168.43.245:8001",
-    "http://192.168.43.245:5173",
-]
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
 
-# # OR for production:
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:5173",
-#     "http://172.19.0.3:5173",  # Docker container
-#     "http://192.168.1.9:5173", # Your host IP
-# ]
 CORS_ALLOW_CREDENTIALS = True
 
 # Application definition

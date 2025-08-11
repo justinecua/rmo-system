@@ -52,70 +52,35 @@ const HomeCollegeAgenda = () => {
     ],
   };
 
-  const collegeThemes = {
-    "Arts and Sciences": {
-      bg: "bg-indigo-50",
-      border: "border-indigo-100",
-      icon: "text-indigo-500",
-    },
-    "Computer Studies": {
-      bg: "bg-blue-50",
-      border: "border-blue-100",
-      icon: "text-blue-500",
-    },
-    "Hospitality and Tourism": {
-      bg: "bg-emerald-50",
-      border: "border-emerald-100",
-      icon: "text-emerald-500",
-    },
-    Engineering: {
-      bg: "bg-green-50",
-      border: "border-green-100",
-      icon: "text-green-500",
-    },
-    "Nursing and Health Sciences": {
-      bg: "bg-red-50",
-      border: "border-red-100",
-      icon: "text-red-500",
-    },
-    "Business and Accountancy": {
-      bg: "bg-purple-50",
-      border: "border-purple-100",
-      icon: "text-purple-500",
-    },
-    Criminology: {
-      bg: "bg-amber-50",
-      border: "border-amber-100",
-      icon: "text-amber-500",
-    },
+  const collegeColors = {
+    "Arts and Sciences": "text-indigo-600",
+    "Computer Studies": "text-blue-600",
+    "Hospitality and Tourism": "text-emerald-600",
+    Engineering: "text-green-600",
+    "Nursing and Health Sciences": "text-red-600",
+    "Business and Accountancy": "text-purple-600",
+    Criminology: "text-amber-600",
   };
 
   return (
-    <div className="px-5 py-12 max-w-7xl mx-auto">
+    <div className="px-4 py-12 max-w-7xl mx-auto">
       {/* Header Section */}
-      <div className="text-center mb-14">
-        <h1 className="text-3xl font-normal text-gray-800 mb-3">
-          College Research Agendas
+      <div className="text-center mb-16">
+        <h1 className="text-3xl font-light text-gray-900 mb-2 tracking-tight">
+          College Research Agenda
         </h1>
-        {/* <p className="text-gray-500 max-w-2xl mx-auto">
-          Strategic research priorities for 2025-2030 academic years
-        </p> */}
+        <div className="w-20 h-0.5 bg-gray-200 mx-auto mt-4"></div>
       </div>
 
       {/* Colleges Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {Object.entries(colleges).map(([college, items]) => (
           <div
             key={college}
-            className={`rounded-lg border ${collegeThemes[college].border} bg-white shadow-sm hover:shadow-md transition-shadow`}
+            className="rounded-lg border border-gray-100 bg-white shadow-xs hover:shadow-sm transition-all"
           >
-            <div
-              className={`${collegeThemes[college].bg} px-5 py-4 border-b ${collegeThemes[college].border}`}
-            >
-              <h3 className="text-lg font-medium text-gray-800 flex items-center">
-                <span
-                  className={`inline-block w-2 h-2 rounded-full ${collegeThemes[college].icon} mr-3`}
-                ></span>
+            <div className="px-6 py-5 border-b border-gray-100">
+              <h3 className={`text-lg font-medium ${collegeColors[college]}`}>
                 {college}
               </h3>
             </div>
@@ -123,11 +88,11 @@ const HomeCollegeAgenda = () => {
               {items.map((item, index) => (
                 <li
                   key={index}
-                  className="px-5 py-3 hover:bg-gray-50 transition-colors"
+                  className="px-6 py-4 hover:bg-gray-50 transition-colors"
                 >
                   <div className="flex items-start">
                     <div
-                      className={`flex-shrink-0 mt-1 ${collegeThemes[college].icon}`}
+                      className={`flex-shrink-0 mt-0.5 ${collegeColors[college]}`}
                     >
                       <svg
                         width="16"
@@ -136,11 +101,13 @@ const HomeCollegeAgenda = () => {
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       >
                         <path d="M5 12h14M12 5l7 7-7 7"></path>
                       </svg>
                     </div>
-                    <p className="ml-3 text-sm text-gray-700">{item}</p>
+                    <p className="ml-3 text-sm text-gray-600">{item}</p>
                   </div>
                 </li>
               ))}
@@ -148,108 +115,6 @@ const HomeCollegeAgenda = () => {
           </div>
         ))}
       </div>
-
-      {/* Framework Section */}
-      {/* <div className="mt-16">
-        <div className="text-center mb-10">
-          <h2 className="text-xl font-medium text-gray-800 mb-2">
-            Research Alignment Framework
-          </h2>
-          <p className="text-gray-500">
-            How our research connects to broader initiatives
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-6xl mx-auto">
-          {[
-            {
-              title: "Institutional Priorities",
-              items: [
-                "Transformative Marian Education",
-                "Digital Innovation",
-                "Community Engagement",
-                "Environmental Stewardship",
-              ],
-              color: "text-indigo-500",
-              icon: (
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-                </svg>
-              ),
-            },
-            {
-              title: "National Agenda",
-              items: [
-                "Industry 4.0 Readiness",
-                "Sustainable Development",
-                "Inclusive Growth",
-                "Global Competitiveness",
-              ],
-              color: "text-green-500",
-              icon: (
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
-                  <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
-                </svg>
-              ),
-            },
-            {
-              title: "UN SDGs",
-              items: [
-                "Quality Education (SDG 4)",
-                "Industry Innovation (SDG 9)",
-                "Climate Action (SDG 13)",
-                "Peace & Justice (SDG 16)",
-              ],
-              color: "text-blue-500",
-              icon: (
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M12 8v4l3 3"></path>
-                </svg>
-              ),
-            },
-          ].map((section, index) => (
-            <div
-              key={index}
-              className="bg-white p-5 rounded-lg border border-gray-100 shadow-sm"
-            >
-              <div className={`${section.color} mb-4 flex items-center`}>
-                {section.icon}
-                <h3 className="font-medium ml-2">{section.title}</h3>
-              </div>
-              <ul className="space-y-2.5">
-                {section.items.map((item, i) => (
-                  <li
-                    key={i}
-                    className="flex items-start text-sm text-gray-600"
-                  >
-                    <span
-                      className={`inline-block w-1.5 h-1.5 rounded-full ${section.color} mt-2 mr-2.5`}
-                    ></span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div> */}
     </div>
   );
 };

@@ -1,75 +1,84 @@
-version: "3.8"
+# ---
+# #------------------- production -------------------
+# version: "3.8"
 
-services:
-  frontend:
-    build:
-      context: ./frontend/twform
-      dockerfile: Dockerfile
-    container_name: frontend
-    command: yarn dev
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend/twform:/usr/src/app
-    networks:
-      - mynetwork
-    restart: always
-    env_file:
-      - ./frontend/twform/.env
-
-  api:
-    build: ./backend
-    container_name: api
-    working_dir: /api/twformProject
-    command: python3 manage.py runserver 0.0.0.0:${CONTAINER_PORT}
-    volumes:
-      - ./backend:/api
-      - ./staticfiles:/home/rmo/api/staticfiles
-    ports:
-      - "${HOST_PORT}:${CONTAINER_PORT}"
-    networks:
-      - mynetwork
-    restart: always
-    environment:
-      - TZ=Asia/Manila
-    env_file:
-      - ./backend/.env
-
-  postgres:
-    image: postgres:14
-    container_name: postgres-db
-    restart: always
-    environment:
-      POSTGRES_DB: rmo
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: domain09
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    networks:
-      - mynetwork
-
-networks:
-  mynetwork:
-    driver: bridge
-
-volumes:
-  postgres_data:
-#production
 # services:
+#   frontend:
+#     build:
+#       context: ./frontend/twform
+#       dockerfile: Dockerfile
+#     container_name: frontend
+#     command: yarn dev
+#     ports:
+#       - "5173:5173"
+#     volumes:
+#       - ./frontend/twform:/usr/src/app
+#     networks:
+#       - mynetwork
+#     restart: always
+#     env_file:
+#       - ./frontend/twform/.env
+
+#   api:
+#     build: ./backend
+#     container_name: api
+#     working_dir: /api/twformProject
+#     command: >
+#       sh -c "
+#         python3 manage.py migrate &&
+#         python3 manage.py loaddata /api/data2.json || true &&
+#         python3 manage.py runserver 0.0.0.0:${CONTAINER_PORT}
+#       "
+#     volumes:
+#       - ./backend:/api
+#       - ./data.json:/api/data22.json
+#       - ./staticfiles:/home/rmo/api/staticfiles
+#       - ./backend/twformProject/media:/api/twformProject/media
+#     ports:
+#       - "${HOST_PORT}:${CONTAINER_PORT}"
+#     networks:
+#       - mynetwork
+#     restart: always
+#     environment:
+#       - TZ=Asia/Manila
+#     env_file:
+#       - ./backend/.env
+
 #   postgres:
 #     image: postgres:14
 #     container_name: postgres-db
 #     restart: always
 #     environment:
-#       POSTGRES_DB: rmo
-#       POSTGRES_USER: admin
-#       POSTGRES_PASSWORD: domain09
+#       POSTGRES_DB: "${POSTGRES_DB}"
+#       POSTGRES_USER: "${POSTGRES_USER}"
+#       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
 #     volumes:
 #       - postgres_data:/var/lib/postgresql/data
 #     ports:
 #       - "5432:5432"
+#     networks:
+#       - mynetwork
+
+# networks:
+#   mynetwork:
+#     driver: bridge
 
 # volumes:
 #   postgres_data:
+# ------------------- local -------------------
+services:
+  postgres:
+    image: postgres:14
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:

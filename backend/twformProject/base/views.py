@@ -25,6 +25,10 @@ from activities.models import Activity
 from articles.models import Articles
 from resources.models import Resource
 from .serializer import UserRegisterSerializer
+import os
+
+secure_flag = os.getenv('SECURE', 'False').lower() == 'true'
+samesite_flag = os.getenv('SAMESITE', 'Lax')
 
 
 @api_view(['POST'])
@@ -55,8 +59,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 key="access_token",
                 value=tokens["access"],
                 httponly=True,
-                secure=True,
-                samesite="None",
+                secure=secure_flag,
+                samesite=samesite_flag,
                 path="/"
             )
 
@@ -64,8 +68,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 key="refresh_token",
                 value=tokens["refresh"],
                 httponly=True,
-                secure=True,
-                samesite="None",
+                secure=secure_flag,
+                samesite=samesite_flag,
                 path="/"
             )
 
@@ -108,8 +112,8 @@ class CustomRefreshTokenView(TokenRefreshView):
                 key='access_token',
                 value=access_token,
                 httponly=True,
-                secure=True,
-                samesite="None",
+                secure=secure_flag,
+                samesite=samesite_flag,
                 path='/'
             )
 
@@ -123,12 +127,22 @@ def logout(request):
     try:
         res = Response()
         res.data = {'success': True}
-        res.delete_cookie('access_token', path='/', samesite='None')
-        res.delete_cookie('refresh_token', path='/', samesite='None')
-        
+        res.delete_cookie(
+            'access_token',
+            path='/',
+            samesite=samesite_flag,
+            secure=secure_flag
+        )
+        res.delete_cookie(
+            'refresh_token',
+            path='/',
+            samesite=samesite_flag,
+            secure=secure_flag
+        )
         return res
     except:
         return Response({'success': False})
+
 
 
 @api_view(['GET'])

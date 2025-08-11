@@ -20,7 +20,7 @@ const HomeFooter = () => {
             <address className="not-italic text-sm text-gray-400">
               <p>St. Michael's College, Quezon Avenue, Poblacion</p>
               <p className="mt-2">researchoffice@smciligan.edu.ph</p>
-              <p>Phone: (123) 456-7890</p>
+              {/* <p>Phone: (123) 456-7890</p> */}
             </address>
           </div>
         </div>
@@ -30,7 +30,10 @@ const HomeFooter = () => {
             © 2025 SMCII Research Management Office. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0 justify-center md:justify-start">
-            <a href="#" className="text-gray-400 hover:text-white">
+            <a
+              href="https://www.facebook.com/smcresearchoffice"
+              className="text-gray-400 hover:text-white"
+            >
               <span className="sr-only">Facebook</span>
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                 <path

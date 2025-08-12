@@ -25,6 +25,9 @@ import RMOStaffArticles from "./features/user_types/rmo_staff/pages/articles";
 import ArticleView from "./features/user_types/rmo_staff/components/articles/ArticleView";
 import { Toaster } from "sonner";
 
+import NotFoundPage from "./features/errors/NotFoundPage";
+import ServerErrorPage from "./features/errors/NoArticleFoundPage";
+
 function App() {
   const { user, loading } = useAuth();
 
@@ -42,6 +45,9 @@ function App() {
       />
 
       <Routes>
+        {/* <Route path="/500" element={<ServerErrorPage />} /> */}
+        <Route path="*" element={<NotFoundPage />} />
+
         <Route
           path="/"
           element={

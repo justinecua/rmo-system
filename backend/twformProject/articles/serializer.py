@@ -29,3 +29,5 @@ class ArticleSerializer(serializers.ModelSerializer):
             'status',
             'articleFiles'
         ]
+
+        

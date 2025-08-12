@@ -164,7 +164,7 @@ def update_article_status(request, article_id):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_article_details(request, article_id):
     try:
         article = Articles.objects.select_related('college').prefetch_related('articleFiles').get(article_id=article_id)
@@ -203,13 +203,11 @@ def get_approved_articles(request):
         paginator = Paginator(articles, page_size)
         page_obj = paginator.get_page(page_number)
         
-        # Serialize the data with additional fields
         serialized_data = []
         for article in page_obj:
             article_data = ArticleSerializer(article).data
-            # Add ISSN number
             article_data['issn'] = "ISSN 1656-8117"
-            # Add PDF URL if available
+          
             if article.articleFiles.exists():
                 pdf_file = article.articleFiles.first().pdf_path
                 article_data['pdf_url'] = request.build_absolute_uri(pdf_file.url)

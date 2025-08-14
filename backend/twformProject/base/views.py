@@ -124,24 +124,10 @@ class CustomRefreshTokenView(TokenRefreshView):
 
 @api_view(['POST'])
 def logout(request):
-    try:
-        res = Response()
-        res.data = {'success': True}
-        res.delete_cookie(
-            'access_token',
-            path='/',
-            samesite=samesite_flag,
-            secure=secure_flag
-        )
-        res.delete_cookie(
-            'refresh_token',
-            path='/',
-            samesite=samesite_flag,
-            secure=secure_flag
-        )
-        return res
-    except:
-        return Response({'success': False})
+    res = Response({'success': True})
+    res.delete_cookie('access_token', path='/')
+    res.delete_cookie('refresh_token', path='/')
+    return res
 
 
 

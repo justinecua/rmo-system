@@ -34,11 +34,12 @@ const ArticleView = () => {
 
   useEffect(() => {
     const fetchArticle = async () => {
-      if (!article && id) {
+      if (id) {
+        // no need for !article
         setArticleLoading(true);
         try {
           const res = await axios.get(GET_ARTICLE_DETAILS(id));
-          console.log("From aricle details:", res);
+          console.log("From article details:", res);
           setArticle(res.data);
         } catch (err) {
           console.error("Failed to fetch article:", err);
@@ -127,7 +128,10 @@ const ArticleView = () => {
                   onClick={() => {
                     const pdfLink =
                       article?.pdf_url ||
-                      `${process.env.REACT_APP_API_BASE_URL}${article?.articleFiles[0].pdf_path}`;
+                      `${import.meta.env.VITE_API_BASE_URL}${
+                        article?.articleFiles[0].pdf_path
+                      }`;
+
                     window.open(pdfLink, "_blank");
                   }}
                 >
@@ -181,7 +185,7 @@ const ArticleView = () => {
         {/* Related Articles */}
         <div className="mt-16">
           <h2 className="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b border-gray-100">
-            Related Research
+            Related Articles
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {relatedLoading ? (

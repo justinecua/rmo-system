@@ -128,7 +128,7 @@ const ArticleView = () => {
                   onClick={() => {
                     const pdfLink =
                       article?.pdf_url ||
-                      `${import.meta.env.VITE_API_BASE_URL}${
+                      `${import.meta.env.VITE_MEDIA_BASE_URL}${
                         article?.articleFiles[0].pdf_path
                       }`;
 

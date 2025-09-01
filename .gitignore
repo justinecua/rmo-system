@@ -75,6 +75,7 @@ backend/*.pot
 backend/debug.log
 backend/celerybeat-schedule
 backend/twformProject/data2.json
+backend/twformProject/media/
 
 # Uncomment if excluding initial migrations (not recommended for teams)
 # backend/**/migrations/
@@ -86,3 +87,5 @@ backend/twformProject/data2.json
 .docker/
 docker-compose.override.yml
 *.pem
+
+resources/

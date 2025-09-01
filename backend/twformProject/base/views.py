@@ -27,6 +27,23 @@ from resources.models import Resource
 from .serializer import UserRegisterSerializer
 import os
 
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.db.models import Count
+from datetime import datetime, timedelta
+from .serializer import (
+    DashboardStatsSerializer,
+    RecentActivitySerializer,
+    ArticleStatusSerializer
+)
+from activities.models import Activity
+from announcements.models import Announcement
+from articles.models import Articles
+from resources.models import Resource
+from accounts.models import Account
+from django.db.models import Count
+
 secure_flag = os.getenv('SECURE', 'False').lower() == 'true'
 samesite_flag = os.getenv('SAMESITE', 'Lax')
 
@@ -196,22 +213,6 @@ def register(request):
 
 #-----------------------Dashboard ----------------------------
 
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from django.db.models import Count
-from datetime import datetime, timedelta
-from .serializer import (
-    DashboardStatsSerializer,
-    RecentActivitySerializer,
-    ArticleStatusSerializer
-)
-from activities.models import Activity
-from announcements.models import Announcement
-from articles.models import Articles
-from resources.models import Resource
-from accounts.models import Account
-from django.db.models import Count
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

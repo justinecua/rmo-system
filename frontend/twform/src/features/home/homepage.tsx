@@ -107,7 +107,6 @@ const HomePage = () => {
     try {
       setloadingResources(true);
       const res = await axios.get(GET_RESOURCES);
-      console.log(res);
       setResources(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       console.error("Failed to fetch resources:", error);

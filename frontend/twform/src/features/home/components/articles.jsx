@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Search, Filter } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ArticleCard from "@/features/user_types/rmo_staff/components/articles/ArticleCard";
 import SubmitArticleDialog from "@/features/user_types/rmo_staff/components/articles/SubmitArticleDialog";
@@ -37,7 +37,7 @@ const HomeArticles = () => {
       try {
         setIsLoadingArticles(true);
 
-        const params: Record<string, any> = {
+        const params = {
           page: currentPage,
           page_size: 15,
         };
@@ -164,7 +164,7 @@ const HomeArticles = () => {
                   >
                     All Colleges
                   </DropdownMenuItem>
-                  {colleges.map((college: any) => (
+                  {colleges.map((college) => (
                     <DropdownMenuItem
                       key={college.college_id}
                       onClick={() =>

@@ -15,16 +15,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreVertical, FileText, CheckCircle2 } from "lucide-react";
-import type { Article, Pagination } from "./types/types";
-
-interface ArticlesTableProps {
-  loading: boolean;
-  articles: Article[];
-  pagination: Pagination;
-  onPageChange: (page: number) => void;
-  onViewDetails: (articleId: number) => void;
-  onReviewStatus: (article: Article) => void;
-}
 
 const ArticlesTable = ({
   loading,
@@ -33,7 +23,7 @@ const ArticlesTable = ({
   onPageChange,
   onViewDetails,
   onReviewStatus,
-}: ArticlesTableProps) => {
+}) => {
   if (loading) {
     return (
       <div className="col-span-full flex justify-center items-center my-90">
@@ -58,7 +48,7 @@ const ArticlesTable = ({
           <TableBody>
             {articles.map((article) => (
               <TableRow key={article.article_id} className="hover:bg-gray-50">
-                <TableCell className="">
+                <TableCell>
                   <div className="line-clamp-2">
                     {article.title.length > 100
                       ? article.title.slice(0, 100) + "..."

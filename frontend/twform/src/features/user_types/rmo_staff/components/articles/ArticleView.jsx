@@ -35,11 +35,9 @@ const ArticleView = () => {
   useEffect(() => {
     const fetchArticle = async () => {
       if (id) {
-        // no need for !article
         setArticleLoading(true);
         try {
           const res = await axios.get(GET_ARTICLE_DETAILS(id));
-          console.log("From article details:", res);
           setArticle(res.data);
         } catch (err) {
           console.error("Failed to fetch article:", err);
@@ -131,7 +129,6 @@ const ArticleView = () => {
                       `${import.meta.env.VITE_MEDIA_BASE_URL}${
                         article?.articleFiles[0].pdf_path
                       }`;
-
                     window.open(pdfLink, "_blank");
                   }}
                 >
@@ -149,7 +146,7 @@ const ArticleView = () => {
                 Keywords
               </h3>
               <div className="flex flex-wrap gap-2">
-                {article?.keywords.map((keyword: string, i: number) => (
+                {article?.keywords.map((keyword, i) => (
                   <span
                     key={i}
                     className="text-xs px-2.5 py-1 rounded-full bg-gray-50 text-gray-600 border border-gray-200"
@@ -169,7 +166,7 @@ const ArticleView = () => {
               </p>
             </div>
 
-            {article?.sections?.map((section: any, index: number) => (
+            {article?.sections?.map((section, index) => (
               <div key={index} className="mb-8">
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">
                   {section?.title}
@@ -196,7 +193,7 @@ const ArticleView = () => {
                 />
               ))
             ) : relatedArticles.length > 0 ? (
-              relatedArticles.map((relatedArticle: any) => (
+              relatedArticles.map((relatedArticle) => (
                 <ArticleCard
                   key={relatedArticle.article_id}
                   article={relatedArticle}

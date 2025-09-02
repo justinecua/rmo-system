@@ -14,26 +14,20 @@ import axios from "axios";
 import { SUBMIT_ARTICLE, GET_COLLEGES_URL } from "@/api/urls";
 import { toast } from "sonner";
 
-const SubmitArticleDialog = ({
-  open,
-  onOpenChange,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}) => {
-  const [file, setFile] = useState<File | null>(null);
+const SubmitArticleDialog = ({ open, onOpenChange }) => {
+  const [file, setFile] = useState(null);
   const [error, setError] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef(null);
 
-  const [emails, setEmails] = useState<string[]>([""]);
-  const [colleges, setColleges] = useState<any[]>([]);
+  const [emails, setEmails] = useState([""]);
+  const [colleges, setColleges] = useState([]);
   const [selectedCollege, setSelectedCollege] = useState("");
   const [title, setTitle] = useState("");
   const [abstract, setAbstract] = useState("");
-  const [authors, setAuthors] = useState<string[]>([""]);
-  const [keywords, setKeywords] = useState<string[]>([""]);
+  const [authors, setAuthors] = useState([""]);
+  const [keywords, setKeywords] = useState([""]);
   const [abstractWordCount, setAbstractWordCount] = useState(0);
 
   useEffect(() => {
@@ -42,7 +36,7 @@ const SubmitArticleDialog = ({
     });
   }, []);
 
-  const validateFile = (selectedFile: File | undefined) => {
+  const validateFile = (selectedFile) => {
     if (selectedFile) {
       if (selectedFile.type === "application/pdf") {
         setFile(selectedFile);
@@ -54,12 +48,12 @@ const SubmitArticleDialog = ({
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e) => {
     const selectedFile = e.target.files?.[0];
     validateFile(selectedFile);
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
   };
@@ -68,14 +62,14 @@ const SubmitArticleDialog = ({
     setIsDragging(false);
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
     const droppedFile = e.dataTransfer.files?.[0];
     validateFile(droppedFile);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file) {
       setError("Please select a PDF file to upload.");
@@ -94,12 +88,11 @@ const SubmitArticleDialog = ({
 
     try {
       setLoading(true);
-      const res = await axios.post(SUBMIT_ARTICLE, formData);
+      await axios.post(SUBMIT_ARTICLE, formData);
       setLoading(false);
 
       toast.success("Article submitted successfully!");
 
-      // reset form
       setFile(null);
       setTitle("");
       setAbstract("");
@@ -109,7 +102,7 @@ const SubmitArticleDialog = ({
       setKeywords([""]);
       setAbstractWordCount(0);
       onOpenChange(false);
-    } catch (err: any) {
+    } catch (err) {
       setLoading(false);
       console.error(err);
       toast.error("Failed to submit article. Please try again.");
@@ -117,50 +110,38 @@ const SubmitArticleDialog = ({
     }
   };
 
-  const handleAuthorChange = (index: number, value: string) => {
+  const handleAuthorChange = (index, value) => {
     const updatedAuthors = [...authors];
     updatedAuthors[index] = value;
     setAuthors(updatedAuthors);
   };
 
-  const addAuthorField = () => {
-    setAuthors([...authors, ""]);
-  };
-
-  const removeAuthorField = (index: number) => {
-    const updatedAuthors = authors.filter((_, i) => i !== index);
-    setAuthors(updatedAuthors);
-  };
+  const addAuthorField = () => setAuthors([...authors, ""]);
+  const removeAuthorField = (index) =>
+    setAuthors(authors.filter((_, i) => i !== index));
 
   const triggerFileInput = () => fileInputRef.current?.click();
   const removeFile = () => {
     setFile(null);
-    fileInputRef.current && (fileInputRef.current.value = "");
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const handleKeywordChange = (index: number, value: string) => {
+  const handleKeywordChange = (index, value) => {
     const updated = [...keywords];
     updated[index] = value;
     setKeywords(updated);
   };
 
-  const addKeywordField = () => {
-    setKeywords([...keywords, ""]);
-  };
+  const addKeywordField = () => setKeywords([...keywords, ""]);
+  const removeKeywordField = (index) =>
+    setKeywords(keywords.filter((_, i) => i !== index));
 
-  const removeKeywordField = (index: number) => {
-    const updated = keywords.filter((_, i) => i !== index);
-    setKeywords(updated);
-  };
-
-  const handleAbstractChange = (value: string) => {
+  const handleAbstractChange = (value) => {
     const cleaned = value
-      .replace(/\s*\n\s*/g, " ") // replace newlines and surrounding space with a single space
-      .replace(/\s+/g, " ") // collapse multiple spaces
+      .replace(/\s*\n\s*/g, " ")
+      .replace(/\s+/g, " ")
       .trim();
-
     setAbstract(cleaned);
-
     const words = cleaned.split(" ").filter((word) => word !== "").length;
     setAbstractWordCount(words);
   };
@@ -188,7 +169,6 @@ const SubmitArticleDialog = ({
         <form className="space-y-4 px-6 pb-6" onSubmit={handleSubmit}>
           <div>
             <Label className="mb-2">Title</Label>
-
             <Input
               className="normal-case"
               value={title}
@@ -298,6 +278,7 @@ const SubmitArticleDialog = ({
               + Add Another Author
             </button>
           </div>
+
           <div>
             <Label className="mb-2">Keywords</Label>
             {keywords.map((keyword, index) => (
@@ -352,6 +333,7 @@ const SubmitArticleDialog = ({
               </button>
             </div>
           )}
+
           <div
             className={`border-2 border-dashed rounded-xl p-6 text-center transition-all ${
               isDragging ? "border-blue-500 bg-blue-50" : "border-gray-200"

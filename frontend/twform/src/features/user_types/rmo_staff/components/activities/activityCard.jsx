@@ -7,19 +7,11 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
-const ActivityCard = ({
-  activity,
-  onViewDetails,
-  onDelete,
-}: {
-  activity: any;
-  onViewDetails: (activity: any) => void;
-  onDelete: (id: number) => void;
-}) => {
+const ActivityCard = ({ activity, onViewDetails, onDelete }) => {
   const backendUrl = import.meta.env.VITE_BACKEND;
 
-  const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = {
+  const formatDate = (dateString) => {
+    const options = {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -27,7 +19,7 @@ const ActivityCard = ({
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const formatTime = (timeString: string) => {
+  const formatTime = (timeString) => {
     if (!timeString) return "";
     const [hours, minutes] = timeString.split(":");
     const hour = parseInt(hours);

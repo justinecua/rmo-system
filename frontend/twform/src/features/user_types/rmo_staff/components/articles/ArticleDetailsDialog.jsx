@@ -6,15 +6,6 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Loader2 } from "lucide-react";
-import type { Article } from "./types/types";
-
-interface ArticleDetailsDialogProps {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  article: Article | null;
-  getMediaUrl: (path: string) => string;
-  isLoading?: boolean;
-}
 
 const ArticleDetailsDialog = ({
   isOpen,
@@ -22,7 +13,7 @@ const ArticleDetailsDialog = ({
   article,
   getMediaUrl,
   isLoading = false,
-}: ArticleDetailsDialogProps) => {
+}) => {
   const backendUrl = import.meta.env.VITE_BACKEND;
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>

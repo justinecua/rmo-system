@@ -32,7 +32,7 @@ const AnnouncementForm = ({
   onSubmit,
   isSubmitting,
   MAX_TOTAL_SIZE_MB,
-}: any) => {
+}) => {
   const coverInputRef = useRef(null);
   const imagesInputRef = useRef(null);
 
@@ -41,7 +41,7 @@ const AnnouncementForm = ({
     setPreviewCover(null);
   };
 
-  const removeImageAtIndex = (index: number) => {
+  const removeImageAtIndex = (index) => {
     const updatedFiles = [...additionalImages];
     const updatedPreviews = [...previewImages];
     updatedFiles.splice(index, 1);
@@ -50,7 +50,7 @@ const AnnouncementForm = ({
     setPreviewImages(updatedPreviews);
   };
 
-  const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCoverChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setCoverPhoto(file);
@@ -58,21 +58,19 @@ const AnnouncementForm = ({
     }
   };
 
-  const handleAdditionalImagesChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleAdditionalImagesChange = (e) => {
     const files = e.target.files ? Array.from(e.target.files) : [];
     const totalSize =
       files.reduce((acc, file) => acc + file.size, 0) +
-      additionalImages.reduce((acc: any, file: any) => acc + file.size, 0);
+      additionalImages.reduce((acc, file) => acc + file.size, 0);
 
     if (totalSize > MAX_TOTAL_SIZE_MB * 1024 * 1024) {
       alert(`Total image size should not exceed ${MAX_TOTAL_SIZE_MB}MB.`);
       return;
     }
 
-    setAdditionalImages((prev: any) => [...prev, ...files]);
-    setPreviewImages((prev: any) => [
+    setAdditionalImages((prev) => [...prev, ...files]);
+    setPreviewImages((prev) => [
       ...prev,
       ...files.map((file) => URL.createObjectURL(file)),
     ]);
@@ -156,7 +154,7 @@ const AnnouncementForm = ({
           />
 
           <div className="mt-2 grid grid-cols-3 gap-3">
-            {previewImages.map((img: string, i: number) => (
+            {previewImages.map((img, i) => (
               <div
                 key={i}
                 className="relative h-32 border rounded-md overflow-hidden"

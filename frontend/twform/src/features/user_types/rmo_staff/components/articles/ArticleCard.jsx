@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { BookOpen } from "lucide-react";
 
-const ArticleCard = ({ article }: { article: any }) => {
+const ArticleCard = ({ article }) => {
   const navigate = useNavigate();
 
   return (
@@ -34,7 +34,7 @@ const ArticleCard = ({ article }: { article: any }) => {
         </p>
 
         <div className="flex flex-wrap gap-2 mb-4">
-          {article.keywords.slice(0, 2).map((keyword: string, i: number) => (
+          {article.keywords?.slice(0, 2).map((keyword, i) => (
             <span
               key={i}
               className="text-sm px-2 py-1 rounded-full bg-gray-100 text-gray-600"

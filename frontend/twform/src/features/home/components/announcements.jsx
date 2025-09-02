@@ -16,12 +16,6 @@ const HomeAnnouncements = ({
   totalPages,
   setCurrentPage,
   loadingAnnouncements,
-}: {
-  announcements: any[];
-  currentPage: number;
-  totalPages: number;
-  setCurrentPage: (page: number) => void;
-  loadingAnnouncements: boolean;
 }) => {
   const backendUrl = import.meta.env.VITE_BACKEND;
 

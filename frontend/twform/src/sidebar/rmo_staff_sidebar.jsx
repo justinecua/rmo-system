@@ -19,15 +19,9 @@ import LogoutDialog from "@/features/auth/pages/logoutDialog";
 
 const LS_KEY = "rmoSidebarCollapsed";
 
-const RMOStaffSidebar = ({
-  collapsed,
-  setCollapsed,
-}: {
-  collapsed: boolean;
-  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
   const location = useLocation();
-  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const [hoveredItem, setHoveredItem] = useState(null);
   const { user, loading } = useAuth();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
@@ -75,7 +69,7 @@ const RMOStaffSidebar = ({
       )}
     >
       <div className="flex flex-col h-full">
-        {/* Header with smooth collapse animation */}
+        {/* Header */}
         <div className="flex items-center justify-between p-4 mb-2">
           {!collapsed && (
             <span className="font-bold text-xl text-gray-800 transition-all duration-300 opacity-100">
@@ -99,7 +93,7 @@ const RMOStaffSidebar = ({
           </Button>
         </div>
 
-        {/* Navigation with enhanced animations */}
+        {/* Navigation */}
         <nav className="flex flex-col px-3 py-2 space-y-1">
           {menuItems.map((item, i) => {
             const Icon = item.icon;
@@ -196,9 +190,10 @@ const RMOStaffSidebar = ({
             );
           })}
         </nav>
+
         <LogoutDialog open={showLogoutDialog} setOpen={setShowLogoutDialog} />
 
-        {/* User Profile with smooth appearance */}
+        {/* User Profile */}
         <div
           className={cn(
             "mt-auto p-4 border-t border-gray-100 transition-all duration-300 overflow-hidden",

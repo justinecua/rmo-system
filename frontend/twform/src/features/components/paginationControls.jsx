@@ -1,13 +1,7 @@
 import { Button } from "@/components/ui/button";
 
-interface PaginationControlsProps {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-}
-
-const getPageNumbers = (currentPage: number, totalPages: number) => {
-  const pages: number[] = [];
+const getPageNumbers = (currentPage, totalPages) => {
+  const pages = [];
 
   if (totalPages <= 3) {
     for (let i = 1; i <= totalPages; i++) {
@@ -23,15 +17,10 @@ const getPageNumbers = (currentPage: number, totalPages: number) => {
     }
   }
 
-  // Filter out-of-bounds (e.g. totalPages = 4, currentPage = 4)
   return pages.filter((page) => page >= 1 && page <= totalPages);
 };
 
-const PaginationControls = ({
-  currentPage,
-  totalPages,
-  onPageChange,
-}: PaginationControlsProps) => {
+const PaginationControls = ({ currentPage, totalPages, onPageChange }) => {
   const pages = getPageNumbers(currentPage, totalPages);
 
   return (
@@ -54,7 +43,7 @@ const PaginationControls = ({
           <Button
             key={page}
             variant={page === currentPage ? "default" : "outline"}
-            onClick={() => onPageChange(page as number)}
+            onClick={() => onPageChange(page)}
             className="w-8 h-8 p-1 text-sm"
           >
             {page}

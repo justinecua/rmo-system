@@ -15,7 +15,7 @@ const ActivityDetailsDialog = ({
   backendUrl,
   formatDate,
   formatTime,
-}: ActivityDetailsDialogProps) => {
+}) => {
   if (!activity) return null;
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -35,7 +35,6 @@ const ActivityDetailsDialog = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[80%] h-[80%] max-w-none md:max-w-6xl p-0 flex flex-col md:flex-row overflow-hidden">
-        {/* Full-view image section - takes full width on mobile, half on desktop */}
         <div className="w-full md:w-1/2 h-[40vh] md:h-full bg-gray-100 relative">
           {allImages.length > 0 ? (
             <>
@@ -44,8 +43,6 @@ const ActivityDetailsDialog = ({
                 alt={activity.title}
                 className="w-full h-full object-contain"
               />
-
-              {/* Navigation arrows - larger on mobile for better touch targets */}
               {allImages.length > 1 && (
                 <>
                   <button
@@ -70,7 +67,6 @@ const ActivityDetailsDialog = ({
           )}
         </div>
 
-        {/* Content section - scrollable on both mobile and desktop */}
         <div className="w-full md:w-1/2 h-[60vh] md:h-full overflow-y-auto p-4 md:p-6">
           <DialogHeader>
             <DialogTitle className="text-xl md:text-2xl">

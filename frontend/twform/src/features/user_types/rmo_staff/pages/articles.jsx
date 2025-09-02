@@ -22,16 +22,10 @@ import axios from "axios";
 import ArticlesTable from "../components/articles/ArticlesTable";
 import ArticleDetailsDialog from "../components/articles/ArticleDetailsDialog";
 import StatusUpdateDialog from "../components/articles/StatusUpdateDialog";
-import type { Article } from "../components/articles/types/types";
-
-interface College {
-  college_id: number;
-  code: string;
-}
 
 const RMOStaffArticles = () => {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [articles, setArticles] = useState([]);
+  const [selectedArticle, setSelectedArticle] = useState(null);
   const [isApproveDialogOpen, setIsApproveDialogOpen] = useState(false);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -43,9 +37,9 @@ const RMOStaffArticles = () => {
   });
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCollege, setSelectedCollege] = useState<string | null>(null);
-  const [colleges, setColleges] = useState<College[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  const [selectedCollege, setSelectedCollege] = useState(null);
+  const [colleges, setColleges] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState(null);
 
   const LS_KEY = "rmoSidebarCollapsed";
 
@@ -61,14 +55,14 @@ const RMOStaffArticles = () => {
     localStorage.setItem(LS_KEY, JSON.stringify(collapsed));
   }, [collapsed]);
 
-  const getMediaUrl = (path: string) => {
+  const getMediaUrl = (path) => {
     const baseUrl = import.meta.env.VITE_MEDIA_BASE_URL || "";
     return path ? `${baseUrl}${path}` : "";
   };
 
   const fetchColleges = useCallback(async () => {
     try {
-      const { data } = await axios.get<College[]>(GET_COLLEGES_URL);
+      const { data } = await axios.get(GET_COLLEGES_URL);
       setColleges(data);
     } catch {
       toast.error("Failed to fetch colleges");
@@ -79,7 +73,7 @@ const RMOStaffArticles = () => {
     try {
       setLoading(true);
 
-      const params: Record<string, unknown> = {
+      const params = {
         page: pagination.page,
         page_size: pagination.pageSize,
       };
@@ -96,7 +90,7 @@ const RMOStaffArticles = () => {
         totalItems: response.data.pagination.total_items,
         totalPages: response.data.pagination.total_pages,
       }));
-    } catch (error) {
+    } catch {
       toast.error("Failed to fetch articles");
     } finally {
       setLoading(false);
@@ -109,16 +103,16 @@ const RMOStaffArticles = () => {
     selectedStatus,
   ]);
 
-  const fetchArticleDetails = async (articleId: number) => {
+  const fetchArticleDetails = async (articleId) => {
     try {
       const response = await axios.get(GET_ARTICLE_DETAILS(articleId));
       setSelectedArticle(response.data);
-    } catch (error) {
+    } catch {
       toast.error("Failed to fetch articles");
     }
   };
 
-  const handleStatusChange = async (articleId: number, newStatus: string) => {
+  const handleStatusChange = async (articleId, newStatus) => {
     try {
       await axios.patch(UPDATE_ARTICLE_STATUS(articleId), {
         status: newStatus,
@@ -133,31 +127,25 @@ const RMOStaffArticles = () => {
       );
 
       if (selectedArticle) {
-        setSelectedArticle({
-          ...selectedArticle,
-          status: newStatus,
-        });
+        setSelectedArticle({ ...selectedArticle, status: newStatus });
       }
 
       toast.success(`Article status updated to ${newStatus}`);
-    } catch (error) {
+    } catch {
       toast.error("Failed to update article status");
     } finally {
       setIsApproveDialogOpen(false);
     }
   };
 
-  // Fetch initial data
   useEffect(() => {
     fetchColleges();
   }, [fetchColleges]);
 
-  // Fetch articles whenever dependencies change
   useEffect(() => {
     fetchArticles();
   }, [fetchArticles]);
 
-  // Helpers
   const resetAndSearch = () => {
     setPagination((prev) => ({ ...prev, page: 1 }));
     fetchArticles();
@@ -175,12 +163,10 @@ const RMOStaffArticles = () => {
       >
         <div className="bg-white p-5 h-full rounded-md">
           <div className="flex justify-between w-full gap-4 mb-3">
-            {/* Header */}
             <div className="flex items-center">
               <h3 className="text-lg font-semibold text-gray-800">Articles</h3>
             </div>
 
-            {/* Filters */}
             <div className="flex flex-wrap gap-2 items-center">
               <Input
                 placeholder="Search by title, author, keyword..."
@@ -191,6 +177,7 @@ const RMOStaffArticles = () => {
                 }}
                 className="w-64"
               />
+
               <Select
                 value={selectedStatus ?? "all"}
                 onValueChange={(value) =>

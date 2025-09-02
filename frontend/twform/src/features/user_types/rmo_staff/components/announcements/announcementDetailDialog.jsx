@@ -7,22 +7,15 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-interface AnnouncementDetailDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  selectedAnnouncement: any;
-  backendUrl: string;
-}
 
 export const AnnouncementDetailDialog = ({
   open,
   onOpenChange,
   selectedAnnouncement,
   backendUrl,
-}: AnnouncementDetailDialogProps) => {
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const photos = selectedAnnouncement?.photos || [];
 
@@ -41,8 +34,6 @@ export const AnnouncementDetailDialog = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[95vw] sm:max-w-[90vw] lg:max-w-[80vw] xl:max-w-[80vw] max-h-[95vh] h-full w-full p-0 flex flex-col md:flex-row overflow-hidden">
-        {/* Close Button - Mobile */}
-
         {/* Left - Image Section */}
         <div className="w-full md:w-1/2 h-[40vh] md:h-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center relative">
           {currentImage ? (
@@ -95,8 +86,6 @@ export const AnnouncementDetailDialog = ({
 
         {/* Right - Details Section */}
         <div className="w-full md:w-1/2 h-[calc(60vh-53px)] md:h-full border-t md:border-t-0 md:border-l border-gray-200 dark:border-gray-700 relative">
-          {/* Close Button - Desktop */}
-
           <ScrollArea className="h-full w-full p-4 md:p-6">
             <DialogHeader className="text-left">
               <DialogTitle className="text-xl sm:text-2xl">
@@ -135,7 +124,7 @@ export const AnnouncementDetailDialog = ({
                     Other Photos
                   </h3>
                   <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 gap-2">
-                    {photos.map((p: any, i: number) => (
+                    {photos.map((p, i) => (
                       <button
                         key={i}
                         onClick={() => setCurrentIndex(i)}

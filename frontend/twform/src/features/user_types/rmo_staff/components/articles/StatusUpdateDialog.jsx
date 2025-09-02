@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,20 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, XCircle, Clock, Loader2 } from "lucide-react";
-import type { Article } from "./types/types";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
-
-interface StatusUpdateDialogProps {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  article: Article | null;
-  onStatusChange: (
-    articleId: number,
-    newStatus: string
-  ) => Promise<void> | void;
-  isLoading?: boolean;
-}
 
 const StatusUpdateDialog = ({
   isOpen,
@@ -27,12 +15,12 @@ const StatusUpdateDialog = ({
   article,
   onStatusChange,
   isLoading = false,
-}: StatusUpdateDialogProps) => {
-  const [actionInProgress, setActionInProgress] = useState<string | null>(null);
+}) => {
+  const [actionInProgress, setActionInProgress] = useState(null);
 
   if (!article) return null;
 
-  const handleStatusChange = async (articleId: number, newStatus: string) => {
+  const handleStatusChange = async (articleId, newStatus) => {
     setActionInProgress(newStatus);
     try {
       await onStatusChange(articleId, newStatus);
@@ -41,8 +29,7 @@ const StatusUpdateDialog = ({
     }
   };
 
-  const isButtonLoading = (status: string) =>
-    isLoading || actionInProgress === status;
+  const isButtonLoading = (status) => isLoading || actionInProgress === status;
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -53,12 +40,12 @@ const StatusUpdateDialog = ({
           </DialogTitle>
         </DialogHeader>
 
-        <div>
-          <div className="space-y-2">
+        <div className="space-y-4">
+          <div>
             <h3 className="font-medium text-gray-800 line-clamp-2">
               {article.title}
             </h3>
-            <div className="flex items-center gap-2 text-sm">
+            <div className="flex items-center gap-2 text-sm mt-1">
               <span className="text-gray-500">Current status:</span>
               <Badge
                 variant={
@@ -75,8 +62,8 @@ const StatusUpdateDialog = ({
             </div>
           </div>
 
-          <div className="mt-3 flex flex-col gap-2">
-            <div className="flex w-full gap-1">
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-1 w-full">
               <Button
                 variant="outline"
                 className="w-1/2"
@@ -97,6 +84,7 @@ const StatusUpdateDialog = ({
                   </>
                 )}
               </Button>
+
               <Button
                 variant="outline"
                 className="w-1/2"

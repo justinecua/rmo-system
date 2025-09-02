@@ -40,7 +40,7 @@ const ActivitiesForm = ({
   onSubmit,
   isSubmitting,
   MAX_TOTAL_SIZE_MB,
-}: any) => {
+}) => {
   const coverInputRef = useRef(null);
   const imagesInputRef = useRef(null);
 
@@ -49,7 +49,7 @@ const ActivitiesForm = ({
     setPreviewCover(null);
   };
 
-  const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCoverChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setCoverPhoto(file);

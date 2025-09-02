@@ -1,4 +1,3 @@
-// RMOStaffAnnouncements.tsx
 import { useEffect, useState } from "react";
 import RMOStaffSidebar from "@/sidebar/rmo_staff_sidebar";
 import { PlusCircle } from "lucide-react";
@@ -14,7 +13,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import PaginationControls from "@/features/components/paginationControls";
 import { DeleteConfirmationDialog } from "../components/DeleteConfirmationDialog";
-import { AnnouncementDetailDialog } from "../components/announcements/announcementDetailDialog";
+import { AnnouncementDetailDialog } from "../components/announcements/announcementDetailDialog.jsx";
 
 const RMOStaffAnnouncements = () => {
   const [openModal, setIsOpenModal] = useState(false);
@@ -29,7 +28,7 @@ const RMOStaffAnnouncements = () => {
   const [description, setDescription] = useState("");
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingAnnouncements, setLoadingAnnouncements] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,7 +54,8 @@ const RMOStaffAnnouncements = () => {
   useEffect(() => {
     localStorage.setItem(LS_KEY, JSON.stringify(collapsed));
   }, [collapsed]);
-  const openDeleteDialog = (id: number) => {
+
+  const openDeleteDialog = (id) => {
     setDeletingId(id);
     setShowDeleteDialog(true);
   };
@@ -81,7 +81,7 @@ const RMOStaffAnnouncements = () => {
       formData.append("cover_photo", coverPhoto);
     }
 
-    additionalImages.forEach((img: File, i: number) => {
+    additionalImages.forEach((img) => {
       formData.append("additional_images", img);
     });
 
@@ -168,8 +168,6 @@ const RMOStaffAnnouncements = () => {
     setSelectedAnnouncement(announcement);
     setDetailDialogOpen(true);
   };
-
-  console.log(selectedAnnouncement);
 
   return (
     <div className="flex w-full bg-[#f5f7fb]">

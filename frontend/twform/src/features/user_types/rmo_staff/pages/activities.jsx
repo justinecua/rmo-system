@@ -2,14 +2,7 @@ import { useEffect, useState } from "react";
 import RMOStaffSidebar from "@/sidebar/rmo_staff_sidebar";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  PlusCircle,
-  CalendarDays,
-  ChevronLeft,
-  ChevronRight,
-  Clock,
-  X,
-} from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import ActivitiesForm from "../components/activities/activitiesForm";
 import {
   ACTIVITIES_URL,
@@ -28,35 +21,33 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
-const MAX_TOTAL_SIZE_MB = 10;
+const MAX_TOTAL_SIZE_MB = 40;
 
 const RMOStaffActivities = () => {
   const [openModal, setIsOpenModal] = useState(false);
-  const [selectedActivity, setSelectedActivity] = useState<any>(null);
+  const [selectedActivity, setSelectedActivity] = useState(null);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
 
   const [title, setTitle] = useState("");
   const [shortDescription, setShortDescription] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
-  const [coverPhoto, setCoverPhoto] = useState<File | null>(null);
-  const [previewCover, setPreviewCover] = useState<string | null>(null);
-  const [additionalImages, setAdditionalImages] = useState<File[]>([]);
-  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [coverPhoto, setCoverPhoto] = useState(null);
+  const [previewCover, setPreviewCover] = useState(null);
+  const [additionalImages, setAdditionalImages] = useState([]);
+  const [previewImages, setPreviewImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [venue, setVenue] = useState("");
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingActivities, setLoadingActivities] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const MAX_TOTAL_SIZE_MB = 40;
-
-  const [activities, setActivities] = useState<any[]>([]);
+  const [activities, setActivities] = useState([]);
   const backendUrl = import.meta.env.VITE_BACKEND;
   const LS_KEY = "rmoSidebarCollapsed";
 
@@ -104,7 +95,6 @@ const RMOStaffActivities = () => {
         setIsOpenModal(false);
         fetchActivities(currentPage);
       } else {
-        const errorData = await response.json();
         toast("Failed to create Activity");
       }
     } catch (error) {
@@ -168,25 +158,21 @@ const RMOStaffActivities = () => {
     fetchActivities(currentPage);
   }, [currentPage]);
 
-  const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const formatTime = (timeString: string) => {
+  const formatTime = (timeString) => {
     if (!timeString) return "";
     const [hours, minutes] = timeString.split(":");
-    const hour = parseInt(hours);
+    const hour = parseInt(hours, 10);
     const period = hour >= 12 ? "PM" : "AM";
     const displayHour = hour % 12 || 12;
     return `${displayHour}:${minutes} ${period}`;
   };
 
-  const openActivityDetails = (activity: any) => {
+  const openActivityDetails = (activity) => {
     setSelectedActivity(activity);
     setDetailModalOpen(true);
   };
@@ -218,6 +204,7 @@ const RMOStaffActivities = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
       <RMOStaffSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
       <ActivitiesForm
@@ -234,9 +221,9 @@ const RMOStaffActivities = () => {
         startTime={startTime}
         setStartTime={setStartTime}
         endTime={endTime}
+        setEndTime={setEndTime}
         venue={venue}
         setVenue={setVenue}
-        setEndTime={setEndTime}
         coverPhoto={coverPhoto}
         setCoverPhoto={setCoverPhoto}
         previewCover={previewCover}
@@ -250,7 +237,6 @@ const RMOStaffActivities = () => {
         MAX_TOTAL_SIZE_MB={MAX_TOTAL_SIZE_MB}
       />
 
-      {/* Activity Details Modal */}
       <ActivityDetailsDialog
         open={detailModalOpen}
         onOpenChange={setDetailModalOpen}
@@ -289,21 +275,19 @@ const RMOStaffActivities = () => {
               <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
             </div>
           ) : activities.length > 0 ? (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {activities.map((activity) => (
-                  <ActivityCard
-                    key={activity.activity_id}
-                    activity={activity}
-                    onViewDetails={openActivityDetails}
-                    onDelete={(id) => {
-                      setShowDeleteDialog(true);
-                      setDeletingId(id);
-                    }}
-                  />
-                ))}
-              </div>
-            </>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {activities.map((activity) => (
+                <ActivityCard
+                  key={activity.activity_id}
+                  activity={activity}
+                  onViewDetails={openActivityDetails}
+                  onDelete={(id) => {
+                    setShowDeleteDialog(true);
+                    setDeletingId(id);
+                  }}
+                />
+              ))}
+            </div>
           ) : (
             <div className="flex flex-col items-center justify-center my-90">
               <div className="text-gray-400 mb-4">

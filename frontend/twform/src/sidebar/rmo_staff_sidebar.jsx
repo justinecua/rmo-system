@@ -36,7 +36,7 @@ const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
       path: "/research_staff/dashboard",
     },
     {
-      label: "Announcements",
+      label: "Announcement",
       icon: Megaphone,
       path: "/research_staff/announcements",
     },

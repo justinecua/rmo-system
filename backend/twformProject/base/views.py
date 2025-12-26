@@ -43,6 +43,7 @@ from articles.models import Articles
 from resources.models import Resource
 from accounts.models import Account
 from django.db.models import Count
+from django.utils import timezone
 
 secure_flag = os.getenv('SECURE', 'False').lower() == 'true'
 samesite_flag = os.getenv('SAMESITE', 'Lax')
@@ -229,11 +230,13 @@ def dashboard_stats(request):
     serializer = DashboardStatsSerializer(stats)
     return Response(serializer.data)
 
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def recent_activities(request):
-    thirty_days_ago = datetime.now() - timedelta(days=30)
-    
+
+    thirty_days_ago = timezone.now() - timedelta(days=30)
     activities = Activity.objects.filter(
         created_at__gte=thirty_days_ago
     ).order_by('-created_at')[:5]
@@ -243,12 +246,12 @@ def recent_activities(request):
     ).order_by('-date_posted')[:5]
     
     recent_items = []
-    
+
     for activity in activities:
         recent_items.append({
             'id': activity.activity_id,
             'title': activity.title,
-            'date': activity.created_at.date(),
+            'date': timezone.localtime(activity.created_at).strftime('%Y-%m-%d'),
             'type': 'activity'
         })
     
@@ -256,14 +259,16 @@ def recent_activities(request):
         recent_items.append({
             'id': announcement.announcement_id,
             'title': announcement.title,
-            'date': announcement.date_posted.date(),
+            'date': timezone.localtime(announcement.date_posted).strftime('%Y-%m-%d'),
             'type': 'announcement'
         })
 
-    recent_items.sort(key=lambda x: x['date'], reverse=True)
-    
-    serializer = RecentActivitySerializer(recent_items[:4], many=True)
-    return Response(serializer.data)
+    recent_items.sort(
+        key=lambda x: x['date'], reverse=True
+    )
+
+    return Response(recent_items[:4])
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

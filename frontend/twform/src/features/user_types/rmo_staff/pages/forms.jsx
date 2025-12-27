@@ -4,10 +4,10 @@ import { cn } from "@/lib/utils";
 import PaginationControls from "@/features/components/paginationControls";
 import { Button } from "@/components/ui/button";
 import { Home, PlusCircle } from "lucide-react";
-import ResourceModal from "../resources/ResourceModal";
 import axios from "axios";
 import { GET_RESOURCES } from "@/api/urls";
-import ResourceCard from "@/features/user_types/rmo_staff/components/resources/resourcesCard";
+import ResourceCard from "../components/components/resourcesCard";
+import ResourceModal from "../components/components/ResourceModal";
 
 const RMOStaffResources = () => {
   const [openModal, setIsOpenModal] = useState(false);

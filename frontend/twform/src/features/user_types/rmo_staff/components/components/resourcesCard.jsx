@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { FileText, Trash2, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DEL_RESOURCES } from "@/api/urls";
-import { DeleteConfirmationDialog } from "../components/DeleteConfirmationDialog";
+import { DeleteConfirmationDialog } from "../DeleteConfirmationDialog";
 
 const ResourceCard = ({ forms, onDelete, showDelete = true }) => {
   const backendUrl = import.meta.env.VITE_BACKEND;

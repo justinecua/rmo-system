@@ -56,7 +56,7 @@ const HomeHeader = ({
                 </span>
               </h1>
               <p className="hidden xl:block text-xs md:text-sm text-gray-500">
-                Promoting excellence in research
+                Be one of Us!
               </p>
             </div>
           </div>
@@ -85,7 +85,7 @@ const HomeHeader = ({
                   : "text-gray-600 hover:text-indigo-500"
               }`}
             >
-              Announcements
+              Announcement
             </button>
             <button
               onClick={() => handleTabClick("activities")}
@@ -150,7 +150,7 @@ const HomeHeader = ({
                   : "text-gray-600 hover:text-indigo-500"
               }`}
             >
-              Articles
+              Abstracts
             </button>
 
             <Link to="/login">

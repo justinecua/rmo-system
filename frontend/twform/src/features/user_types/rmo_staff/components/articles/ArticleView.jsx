@@ -91,7 +91,7 @@ const ArticleView = () => {
           className="flex items-center text-gray-600 hover:text-gray-800 mb-8 transition-colors group"
         >
           <ChevronLeft className="w-5 h-5 mr-1 transition-transform group-hover:-translate-x-1" />
-          <span className="text-sm font-medium">Back to Articles</span>
+          <span className="text-sm font-medium">Back to Abstracts</span>
         </button>
 
         <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
@@ -118,7 +118,7 @@ const ArticleView = () => {
                   <span>ISSN 1656-8117</span>
                 </div>
               </div>
-              {(article?.pdf_url || article?.articleFiles?.[0]?.pdf_path) && (
+              {/* {(article?.pdf_url || article?.articleFiles?.[0]?.pdf_path) && (
                 <Button
                   variant="ghost"
                   size="sm"
@@ -135,7 +135,7 @@ const ArticleView = () => {
                   <Download className="h-4 w-4" />
                   <span className="text-sm">PDF</span>
                 </Button>
-              )}
+              )} */}
             </div>
           </div>
 

@@ -112,10 +112,10 @@ const HomeArticles = () => {
         <div className="mb-3 flex flex-col sm:flex-row w-full justify-between items-start sm:items-center gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
-              Articles
+              Abstracts
             </h1>
             <p className="text-sm sm:text-base text-gray-600">
-              Discover and explore academic publications across disciplines
+              Discover and explore research articles from different colleges
             </p>
           </div>
           <div className="w-full sm:w-auto">

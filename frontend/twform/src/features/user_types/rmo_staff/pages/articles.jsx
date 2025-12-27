@@ -23,6 +23,8 @@ import ArticlesTable from "../components/articles/ArticlesTable";
 import ArticleDetailsDialog from "../components/articles/ArticleDetailsDialog";
 import StatusUpdateDialog from "../components/articles/StatusUpdateDialog";
 
+const CLICK_DELAY = 250;
+
 const RMOStaffArticles = () => {
   const [articles, setArticles] = useState([]);
   const [selectedArticle, setSelectedArticle] = useState(null);
@@ -51,9 +53,10 @@ const RMOStaffArticles = () => {
     }
   });
 
-  useEffect(() => {
-    localStorage.setItem(LS_KEY, JSON.stringify(collapsed));
-  }, [collapsed]);
+  const resetAndSearch = () => {
+    setPagination((prev) => ({ ...prev, page: 1 }));
+    fetchArticles();
+  };
 
   const getMediaUrl = (path) => {
     const baseUrl = import.meta.env.VITE_MEDIA_BASE_URL || "";
@@ -135,8 +138,13 @@ const RMOStaffArticles = () => {
       toast.error("Failed to update article status");
     } finally {
       setIsApproveDialogOpen(false);
+      setSelectedArticle(null);
     }
   };
+
+  useEffect(() => {
+    localStorage.setItem(LS_KEY, JSON.stringify(collapsed));
+  }, [collapsed]);
 
   useEffect(() => {
     fetchColleges();
@@ -145,11 +153,6 @@ const RMOStaffArticles = () => {
   useEffect(() => {
     fetchArticles();
   }, [fetchArticles]);
-
-  const resetAndSearch = () => {
-    setPagination((prev) => ({ ...prev, page: 1 }));
-    fetchArticles();
-  };
 
   return (
     <div className="flex w-full h-screen bg-[#f5f7fb]">

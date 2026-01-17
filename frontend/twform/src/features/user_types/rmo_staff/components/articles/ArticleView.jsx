@@ -118,7 +118,7 @@ const ArticleView = () => {
                   <span>ISSN 1656-8117</span>
                 </div>
               </div>
-              {(article?.pdf_url || article?.articleFiles?.[0]?.pdf_path) && (
+              {/* {(article?.pdf_url || article?.articleFiles?.[0]?.pdf_path) && (
                 <Button
                   variant="ghost"
                   size="sm"
@@ -135,7 +135,7 @@ const ArticleView = () => {
                   <Download className="h-4 w-4" />
                   <span className="text-sm">PDF</span>
                 </Button>
-              )}
+              )} */}
             </div>
           </div>
 

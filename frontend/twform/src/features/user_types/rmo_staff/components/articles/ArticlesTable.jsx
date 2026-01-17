@@ -15,7 +15,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreVertical, FileText, CheckCircle2 } from "lucide-react";
+import { useRef } from "react";
 
+const CLICK_DELAY = 250;
 const ArticlesTable = ({
   loading,
   articles,
@@ -32,6 +34,22 @@ const ArticlesTable = ({
     );
   }
 
+  const clickTimer = useRef(null);
+
+  const handleRowClick = (article) => {
+    if (clickTimer.current) {
+      // DOUBLE CLICK
+      clearTimeout(clickTimer.current);
+      clickTimer.current = null;
+      onReviewStatus(article);
+    } else {
+      // SINGLE CLICK (wait to see if second click happens)
+      clickTimer.current = setTimeout(() => {
+        onViewDetails(article.article_id);
+        clickTimer.current = null;
+      }, CLICK_DELAY);
+    }
+  };
   return (
     <>
       <div className="rounded-lg border border-gray-200 overflow-hidden">
@@ -47,7 +65,11 @@ const ArticlesTable = ({
           </TableHeader>
           <TableBody>
             {articles.map((article) => (
-              <TableRow key={article.article_id} className="hover:bg-gray-50">
+              <TableRow
+                key={article.article_id}
+                onClick={() => handleRowClick(article)}
+                className="hover:bg-gray-50 cursor-pointer"
+              >
                 <TableCell>
                   <div className="line-clamp-2">
                     {article.title.length > 100

@@ -1,12 +1,13 @@
 from django.db import models
 from accounts.models import Account
+from django.utils import timezone
 
 class Announcement(models.Model):
     announcement_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
     short_description = models.TextField(max_length=600,blank=True)
     description = models.TextField(max_length=8000)
-    date_posted = models.DateTimeField(auto_now_add=True)
+    date_posted = models.DateTimeField(default=timezone.now)
     is_pinned = models.BooleanField(default=False)
 
     def __str__(self):

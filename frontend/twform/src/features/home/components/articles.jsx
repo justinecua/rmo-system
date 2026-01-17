@@ -115,7 +115,7 @@ const HomeArticles = () => {
               Articles
             </h1>
             <p className="text-sm sm:text-base text-gray-600">
-              Discover and explore academic publications across disciplines
+              Discover and explore research articles from different colleges
             </p>
           </div>
           <div className="w-full sm:w-auto">

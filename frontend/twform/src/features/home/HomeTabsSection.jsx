@@ -4,6 +4,8 @@ import HomeInstitutionalAgenda from "./components/institutionalAgenda";
 import HomeCollegeAgenda from "./components/collegeAgenda";
 import HomeForms from "./components/forms";
 import HomeArticles from "./components/articles";
+import HomeResearchCamp from "./components/researchcamp";
+import HomeIpoDocuments from "./components/ipo";
 
 const HomeTabsSection = ({
   activeTab,
@@ -61,6 +63,8 @@ const HomeTabsSection = ({
       )}
 
       {activeTab === "articles" && <HomeArticles />}
+      {activeTab === "research-camp" && <HomeResearchCamp />}
+      {activeTab === "ipo" && <HomeIpoDocuments />}
     </div>
   );
 };

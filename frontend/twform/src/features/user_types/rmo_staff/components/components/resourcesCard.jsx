@@ -64,7 +64,9 @@ const ResourceCard = ({ forms, onDelete, showDelete = true }) => {
   return (
     <>
       {forms.map((form) => {
-        const fullLink = `${backendUrl}${form.file_url}`;
+        const fullLink = form.file_url.startsWith("http")
+          ? form.file_url
+          : form.file_url;
         const fileType = form.file_url.split(".").pop().toUpperCase();
 
         return (

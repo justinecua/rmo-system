@@ -26,7 +26,6 @@ import ArticleView from "./features/user_types/rmo_staff/components/articles/Art
 import { Toaster } from "sonner";
 
 import NotFoundPage from "./features/errors/NotFoundPage";
-import ServerErrorPage from "./features/errors/NoArticleFoundPage";
 
 function App() {
   const { user, loading } = useAuth();

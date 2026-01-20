@@ -30,21 +30,46 @@ def uploadResource(request):
             "resource_id": resource.resource_id
         }, status=status.HTTP_201_CREATED)
 
+import re
+from rest_framework.decorators import api_view, parser_classes, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
+from .models import Resource
+
 @api_view(['GET'])
 @parser_classes([MultiPartParser, FormParser])
 @permission_classes([AllowAny])
 def getResources(request):
-        resources = Resource.objects.all().order_by('resource_id')
-        data = [
-            {
-                "resource_id": r.resource_id,
-                "title": r.title,
-                "subject": r.subject,
-                "file_url": r.file.url,
-                "size": r.size,
-            } for r in resources
-        ]
-        return Response(data)
+    resources = Resource.objects.exclude(title__isnull=True)
+
+    def extract_number(title):
+        match = re.search(r'\d+', title)
+        return int(match.group()) if match else 0
+
+    def is_tw_form(title):
+        return title.lower().startswith('tw')
+
+    resources = sorted(
+        resources,
+        key=lambda r: (
+            extract_number(r.title),   # 1️⃣ number first
+            is_tw_form(r.title)        # 2️⃣ Form (False) before TW Form (True)
+        )
+    )
+
+    data = [
+        {
+            "resource_id": r.resource_id,
+            "title": r.title,
+            "subject": r.subject,
+            "file_url": r.file.url,
+            "size": r.size,
+        }
+        for r in resources
+    ]
+    return Response(data)
+
 
 @api_view(['DELETE'])
 @permission_classes([AllowAny])

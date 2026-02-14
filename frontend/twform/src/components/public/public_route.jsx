@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../context/useAuth";
 import LoadingSpinner from "../ui/loadingspinner";
+import { getDashboardPath } from "../../utils/roleMap";
 
 const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -9,10 +10,8 @@ const PublicRoute = ({ children }) => {
   if (loading) return <LoadingSpinner />;
 
   if (user && user.user_type) {
-    const dashboardPath = `/${user.user_type
-      .toLowerCase()
-      .replace(" ", "_")}/dashboard`;
-    return <Navigate to={dashboardPath} replace />;
+    const dashboardPath = getDashboardPath(user.user_type);
+    if (dashboardPath) return <Navigate to={dashboardPath} replace />;
   }
 
   return children;

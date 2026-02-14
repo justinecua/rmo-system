@@ -88,40 +88,39 @@ class CollegeSerializer(serializers.ModelSerializer):
 
 User = get_user_model()
 
-class EmailTokenObtainPairSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import check_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username = serializers.CharField()
     password = serializers.CharField(write_only=True)
 
     def validate(self, attrs):
-        email = attrs.get("email")
+        username = attrs.get("username")
         password = attrs.get("password")
 
+        if not username or not password:
+            raise serializers.ValidationError("Username and password required.")
+
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(username=username)
         except User.DoesNotExist:
             raise serializers.ValidationError("User not found.")
 
-        # Email exists, now check password
-        if not user.check_password(password):
+        if not check_password(password, user.password):
             raise serializers.ValidationError("Incorrect password.")
 
-        if not user.is_active:
-            raise serializers.ValidationError("This account is inactive.")
+        data = super().validate({
+            "username": username,
+            "password": password
+        })
 
-        # Get user_type
-        try:
-            account = Account.objects.get(user_id=user)
-            user_type = account.user_type_id.name
-        except Account.DoesNotExist:
-            user_type = None
+        # attach user_type
+        data["user_type"] = user.account.user_type.user_type
 
-        refresh = RefreshToken.for_user(user)
-
-        return {
-            "refresh": str(refresh),
-            "access": str(refresh.access_token),
-            "user_type": user_type,
-        }
+        return data
 
 
 # serializers.py

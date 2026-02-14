@@ -8,11 +8,11 @@ import {
 
 axios.defaults.withCredentials = true;
 
-export const login = async (email, password) => {
+export const login = async (username, password) => {
   const response = await axios.post(
     LOGIN_URL,
-    { email, password },
-    { withCredentials: true }
+    { username, password },
+    { withCredentials: true },
   );
   return response.data;
 };
@@ -26,7 +26,7 @@ export const register = async (username, email, password) => {
   const response = await axios.post(
     REGISTER_URL,
     { username, email, password },
-    { withCredentials: true }
+    { withCredentials: true },
   );
   return response.data;
 };

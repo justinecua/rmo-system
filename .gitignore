@@ -89,3 +89,4 @@ docker-compose.override.yml
 *.pem
 
 resources/
+backend/twformProject/media.tar

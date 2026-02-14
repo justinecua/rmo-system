@@ -15,7 +15,7 @@ import HomePage from "./features/home/homepage";
 import { useAuth } from "./context/useAuth";
 import StudentForms from "./features/user_types/student/pages/forms";
 
-/* Research Staff */
+/* Research  */
 import RMOStaffAnnouncements from "./features/user_types/rmo_staff/pages/announcements";
 import RMOStaffActivities from "./features/user_types/rmo_staff/pages/activities";
 import RMOStaffIRA from "./features/user_types/rmo_staff/pages/ira";
@@ -26,6 +26,7 @@ import ArticleView from "./features/user_types/rmo_staff/components/articles/Art
 import { Toaster } from "sonner";
 
 import NotFoundPage from "./features/errors/NotFoundPage";
+import { getDashboardPath } from "./utils/roleMap";
 
 function App() {
   const { user, loading } = useAuth();
@@ -99,7 +100,7 @@ function App() {
           }
         />
         <Route
-          path="/research_staff/dashboard"
+          path="/research/dashboard"
           element={
             <PrivateRoute>
               <RMOStaffDashboard />
@@ -107,7 +108,7 @@ function App() {
           }
         />
         <Route
-          path="/research_staff/announcements"
+          path="/research/announcements"
           element={
             <PrivateRoute>
               <RMOStaffAnnouncements />
@@ -115,7 +116,7 @@ function App() {
           }
         />
         <Route
-          path="/research_staff/activities"
+          path="/research/activities"
           element={
             <PrivateRoute>
               <RMOStaffActivities />
@@ -123,7 +124,7 @@ function App() {
           }
         />
         <Route
-          path="/research_staff/ira"
+          path="/research/ira"
           element={
             <PrivateRoute>
               <RMOStaffIRA />
@@ -131,7 +132,7 @@ function App() {
           }
         />
         <Route
-          path="/research_staff/rca"
+          path="/research/rca"
           element={
             <PrivateRoute>
               <RMOStaffRCA />
@@ -139,7 +140,7 @@ function App() {
           }
         />
         <Route
-          path="/research_staff/forms"
+          path="/research/forms"
           element={
             <PrivateRoute>
               <RMOStaffForms />
@@ -147,7 +148,7 @@ function App() {
           }
         />
         <Route
-          path="/research_staff/articles"
+          path="/research/articles"
           element={
             <PrivateRoute>
               <RMOStaffArticles />
@@ -181,11 +182,9 @@ function App() {
         <Route
           path="/"
           element={
-            user && user.user_type ? (
+            user ? (
               <Navigate
-                to={`/${user.user_type
-                  .toLowerCase()
-                  .replace(" ", "_")}/dashboard`}
+                to={getDashboardPath(user.user_type) || "/login"}
                 replace
               />
             ) : (

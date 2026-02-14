@@ -24,11 +24,10 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  const loginUser = async (email, password) => {
-    const res = await login(email, password);
+  const loginUser = async (username, password) => {
+    const res = await login(username, password);
     if (res.success || res.user_type) {
       await fetchUser();
-      console.log("Login success, user type:", res.user_type);
       return res.user_type;
     }
     return false;

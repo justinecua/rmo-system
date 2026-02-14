@@ -44,6 +44,8 @@ from resources.models import Resource
 from accounts.models import Account
 from django.db.models import Count
 from django.utils import timezone
+import os
+import bcrypt
 
 secure_flag = os.getenv('SECURE', 'False').lower() == 'true'
 samesite_flag = os.getenv('SAMESITE', 'Lax')
@@ -59,57 +61,72 @@ def register(request):
     return Response(serializer.error)
 
 
+from django.contrib.auth.hashers import check_password
+from rest_framework_simplejwt.tokens import RefreshToken
+import bcrypt
+
+@permission_classes([AllowAny])
 class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = EmailTokenObtainPairSerializer
+    serializer_class = None
 
     def post(self, request, *args, **kwargs):
         try:
-            serializer = self.get_serializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            tokens = serializer.validated_data
+            username = request.data.get("username")
+            password = request.data.get("password")
+
+            if not username or not password:
+                return Response(
+                    {"success": False, "error": "Username and password required"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                return Response(
+                    {"success": False, "error": "User not found."},
+                    status=status.HTTP_401_UNAUTHORIZED,
+                )
+
+            stored_hash = user.password
+            is_valid = False
+
+            if stored_hash.startswith("pbkdf2_sha256"):
+                is_valid = check_password(password, stored_hash)
+            elif stored_hash.startswith("$2y$") or stored_hash.startswith("$2b$"):
+                is_valid = bcrypt.checkpw(password.encode(), stored_hash.encode())
+
+            if not is_valid:
+                return Response(
+                    {"success": False, "error": "Incorrect password."},
+                    status=status.HTTP_401_UNAUTHORIZED,
+                )
+
+            refresh = RefreshToken.for_user(user)
+
+            account = Account.objects.filter(user_id=user).first()
 
             res = Response({
-                'success': True,
-                'user_type': tokens["user_type"]
+                "success": True,
+                "user_type": account.user_type_id.name if account else None,
             })
 
-            res.set_cookie(
-                key="access_token",
-                value=tokens["access"],
-                httponly=True,
-                secure=secure_flag,
-                samesite=samesite_flag,
-                path="/"
-            )
+            res.set_cookie("access_token", str(refresh.access_token),
+                           httponly=True, secure=secure_flag,
+                           samesite=samesite_flag, path="/")
 
-            res.set_cookie(
-                key="refresh_token",
-                value=tokens["refresh"],
-                httponly=True,
-                secure=secure_flag,
-                samesite=samesite_flag,
-                path="/"
-            )
+            res.set_cookie("refresh_token", str(refresh),
+                           httponly=True, secure=secure_flag,
+                           samesite=samesite_flag, path="/")
 
             return res
-
-        except serializers.ValidationError as e:
-            raw = e.detail
-            if isinstance(raw, dict) and "non_field_errors" in raw:
-                error_message = raw["non_field_errors"][0]
-            else:
-                error_message = str(e.detail)
-
-            return Response(
-                {"success": False, "error": str(error_message)},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
 
         except Exception as e:
             return Response(
                 {"success": False, "error": str(e)},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
+
 
 
 class CustomRefreshTokenView(TokenRefreshView):

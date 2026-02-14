@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -27,7 +27,7 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      const userType = await loginUser(email, password);
+      const userType = await loginUser(username, password);
       if (userType) {
         switch (userType) {
           case "Student":
@@ -43,7 +43,7 @@ const LoginPage = () => {
             nav("/dean/dashboard", { replace: true });
             break;
           case "Research Staff":
-            nav("/research_staff/dashboard", { replace: true });
+            nav("/research/dashboard", { replace: true });
             break;
           default:
             toast("Unknown user type.");
@@ -99,14 +99,14 @@ const LoginPage = () => {
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-700 font-medium">
-                  Email
+                  Username
                 </Label>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="your.email@smc.edu"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  id="username"
+                  type="text"
+                  placeholder="Enter your username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                   className="py-2 px-3 border-gray-300 focus:border-[#160e73] focus:ring-2 focus:ring-[#160e73]/50 rounded-sm transition-all"
                 />

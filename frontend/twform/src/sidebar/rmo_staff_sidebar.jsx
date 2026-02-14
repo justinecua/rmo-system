@@ -33,25 +33,25 @@ const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
     {
       label: "Dashboard",
       icon: LayoutDashboard,
-      path: "/research_staff/dashboard",
+      path: "/research/dashboard",
     },
     {
       label: "Announcement",
       icon: Megaphone,
-      path: "/research_staff/announcements",
+      path: "/research/announcements",
     },
     {
       label: "Activities",
       icon: CalendarPlus2,
-      path: "/research_staff/activities",
+      path: "/research/activities",
     },
     // { label: "IRA", icon: BookOpen, path: "/research_staff/ira" },
     // { label: "RCA", icon: BookText, path: "/research_staff/rca" },
-    { label: "Forms", icon: Files, path: "/research_staff/forms" },
+    { label: "Forms", icon: Files, path: "/research/forms" },
     {
       label: "Articles",
       icon: ScrollText,
-      path: "/research_staff/articles",
+      path: "/research/articles",
     },
     {
       label: "Logout",
@@ -65,7 +65,7 @@ const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
     <aside
       className={cn(
         "bg-white h-[100vh] border-r border-[#f0f0f0] transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden fixed z-50",
-        collapsed ? "w-20" : "w-64"
+        collapsed ? "w-20" : "w-64",
       )}
     >
       <div className="flex flex-col h-full">
@@ -82,7 +82,7 @@ const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
             onClick={() => setCollapsed((prev) => !prev)}
             className={cn(
               "transition-all duration-300 hover:bg-gray-100 rounded-full",
-              collapsed ? "mx-auto" : ""
+              collapsed ? "mx-auto" : "",
             )}
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
@@ -107,7 +107,7 @@ const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
                   "relative flex items-center px-4 py-3 rounded-lg transition-all duration-300 group",
                   "hover:bg-gray-50 active:scale-95",
                   isActive ? "bg-blue-50 text-blue-600" : "text-gray-600",
-                  collapsed ? "justify-center px-0" : "justify-start"
+                  collapsed ? "justify-center px-0" : "justify-start",
                 )}
                 onMouseEnter={() => setHoveredItem(i)}
                 onMouseLeave={() => setHoveredItem(null)}
@@ -115,7 +115,7 @@ const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
                 <div
                   className={cn(
                     "flex items-center w-full transition-all duration-300",
-                    collapsed ? "justify-center" : "justify-start gap-3"
+                    collapsed ? "justify-center" : "justify-start gap-3",
                   )}
                 >
                   <div className="relative">
@@ -124,7 +124,7 @@ const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
                       className={cn(
                         "shrink-0 transition-all duration-200",
                         hoveredItem === i ? "scale-110" : "scale-100",
-                        isActive ? "text-blue-600" : "text-gray-600"
+                        isActive ? "text-blue-600" : "text-gray-600",
                       )}
                     />
                     {hoveredItem === i && (
@@ -137,7 +137,7 @@ const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
                       "transform origin-left",
                       collapsed
                         ? "opacity-0 w-0 -translate-x-2 overflow-hidden"
-                        : "opacity-100 w-auto translate-x-0"
+                        : "opacity-100 w-auto translate-x-0",
                     )}
                   >
                     {item.label}
@@ -151,7 +151,7 @@ const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
                 className={cn(
                   "relative w-full text-left flex items-center px-4 py-3 rounded-lg transition-all duration-300 group",
                   "hover:bg-gray-50 active:scale-95 text-gray-600",
-                  collapsed ? "justify-center px-0" : "justify-start"
+                  collapsed ? "justify-center px-0" : "justify-start",
                 )}
                 onMouseEnter={() => setHoveredItem(i)}
                 onMouseLeave={() => setHoveredItem(null)}
@@ -159,7 +159,7 @@ const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
                 <div
                   className={cn(
                     "flex items-center w-full transition-all duration-300",
-                    collapsed ? "justify-center" : "justify-start gap-3"
+                    collapsed ? "justify-center" : "justify-start gap-3",
                   )}
                 >
                   <div className="relative">
@@ -167,7 +167,7 @@ const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
                       size={19}
                       className={cn(
                         "shrink-0 transition-all duration-200",
-                        hoveredItem === i ? "scale-110" : "scale-100"
+                        hoveredItem === i ? "scale-110" : "scale-100",
                       )}
                     />
                     {hoveredItem === i && (
@@ -180,7 +180,7 @@ const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
                       "transform origin-left",
                       collapsed
                         ? "opacity-0 w-0 -translate-x-2 overflow-hidden"
-                        : "opacity-100 w-auto translate-x-0"
+                        : "opacity-100 w-auto translate-x-0",
                     )}
                   >
                     {item.label}
@@ -197,7 +197,7 @@ const RMOStaffSidebar = ({ collapsed, setCollapsed }) => {
         <div
           className={cn(
             "mt-auto p-4 border-t border-gray-100 transition-all duration-300 overflow-hidden",
-            collapsed ? "max-h-0 py-0 opacity-0" : "max-h-32 py-4 opacity-100"
+            collapsed ? "max-h-0 py-0 opacity-0" : "max-h-32 py-4 opacity-100",
           )}
         >
           <div className="flex items-center space-x-3">

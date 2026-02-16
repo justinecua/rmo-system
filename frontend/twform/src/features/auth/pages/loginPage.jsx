@@ -13,11 +13,13 @@ import { useState } from "react";
 import { useAuth } from "../../../context/useAuth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { loginUser } = useAuth();
   const nav = useNavigate();
@@ -29,25 +31,26 @@ const LoginPage = () => {
     try {
       const userType = await loginUser(username, password);
       if (userType) {
-        switch (userType) {
-          case "Student":
-            nav("/student/dashboard", { replace: true });
-            break;
-          case "Panel":
-            nav("/panel/dashboard", { replace: true });
-            break;
-          case "Adviser":
-            nav("/adviser/dashboard", { replace: true });
-            break;
-          case "Dean":
-            nav("/dean/dashboard", { replace: true });
-            break;
-          case "Research Staff":
-            nav("/research/dashboard", { replace: true });
-            break;
-          default:
-            toast("Unknown user type.");
-            setLoading(false);
+        if (userType.includes("Research")) {
+          nav("/research/dashboard", { replace: true });
+        } else {
+          switch (userType) {
+            case "Student":
+              nav("/student/dashboard", { replace: true });
+              break;
+            case "Panel":
+              nav("/panel/dashboard", { replace: true });
+              break;
+            case "Adviser":
+              nav("/adviser/dashboard", { replace: true });
+              break;
+            case "Dean":
+              nav("/dean/dashboard", { replace: true });
+              break;
+            default:
+              toast("Unknown user type.");
+              setLoading(false);
+          }
         }
       } else {
         setLoading(false);
@@ -115,15 +118,27 @@ const LoginPage = () => {
                 <Label htmlFor="password" className="text-gray-700 font-medium">
                   Password
                 </Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="py-2 px-3 border-gray-300 focus:border-[#160e73] focus:ring-2 focus:ring-[#160e73]/50 rounded-sm transition-all"
-                />
+
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="py-2 px-3 pr-10 border-gray-300 focus:border-[#160e73] focus:ring-2 focus:ring-[#160e73]/50 rounded-sm transition-all"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#160e73]"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
               </div>
             </div>
 
